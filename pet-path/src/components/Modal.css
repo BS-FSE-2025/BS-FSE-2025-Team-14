@@ -1,0 +1,108 @@
+/* modal.css */
+
+/* הגדרת המודל */
+.modal {
+    width: 60%; /* לא להרחיב את המודל מדי */
+    height: 70%; /* גובה המודל */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 999;
+    visibility: hidden; /* התחל במצב מוסתר */
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0s 0.3s;
+    border: 3px solid #4a3627; /* מסגרת חומה */
+}
+
+/* הצגת המודל */
+.modal.show {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s ease, visibility 0s;
+}
+
+/* עיצוב התמונה */
+.image-side {
+    background-image: url('//media/paw2.jpg'); /* וודא שהתמונה נטענת */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; /* אל תעשה חזרה אם התמונה קטנה */
+    height: 100%;
+    width: 50%;
+    transition: transform 0.5s ease;
+}
+
+/* עיצוב החלק עם הטופס */
+.form-side {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    position: relative;
+    background-color: #F8F1E7;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 100%; /* ודא שהטופס לא ייצא החוצה */
+    box-sizing: border-box; /* מוסיף מרווח פנימי לפנים אלמנט */
+}
+
+/* מעבר של התמונה */
+.move-left .image-side {
+    transform: translateX(-100%); /* תמונה זזה שמאלה */
+}
+
+.move-right .image-side {
+    transform: translateX(0%); /* תמונה זזה ימינה */
+}
+
+/* מעבר של הטופס */
+.move-left .form-side {
+    transform: translateX(100%); /* טופס הרשמה זז ימינה */
+}
+
+.move-right .form-side {
+    transform: translateX(0%); /* טופס התחברות זז שמאלה */
+}
+
+/* כפתורים בתפריט */
+.tabs button {
+    background-color: #9E7B56;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.tabs button:hover {
+    background-color: #7F5C3E;
+}
+
+.tabs button.active {
+    background-color: #7F5C3E;
+}
+
+/* כפתור סגירה */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #9E7B56;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    background-color: #7F5C3E;
+}

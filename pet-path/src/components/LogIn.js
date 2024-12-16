@@ -1,3 +1,4 @@
+// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../auth';
@@ -11,12 +12,8 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // נסיים את ההתחברות
-      const user = await loginUser(username, password);
-
-      // אם ההתחברות הצליחה, נוודא את סוג המשתמש
+      const user = await loginUser(username, password, role);
       if (user.role === role) {
-        // נוודא שהמשתמש מחובר כהלכה
         navigate(`/dashboard/${user.role}`, { state: { user } });
       } else {
         alert("הסוג לא תואם! נסה שנית.");
@@ -28,34 +25,32 @@ function Login() {
   };
 
   return (
-    <div className="screen">
-      <h2>Login</h2>
+    <div>
+      <h2>התחבר</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Username"
+          placeholder="שם משתמש"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="סיסמה"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
         >
-          <option value="dogowner">Dog Owner</option>
-          <option value="dogwalker">Dog Walker</option>
-          <option value="vet">Veterinarian</option>
+          <option value="dogowner">בעל כלב</option>
+          <option value="dogwalker">דוג ווקר</option>
+          <option value="vet">וטרינר</option>
         </select>
-        
-        <button type="submit">Login</button>
+        <button type="submit">התחבר</button>
       </form>
     </div>
   );

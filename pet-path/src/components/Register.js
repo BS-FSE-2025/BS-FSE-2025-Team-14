@@ -1,6 +1,6 @@
 // Register.js
 import React, { useState } from 'react';
-import { registerUser } from '../auth'; // ודא שהנתיב נכון
+import { registerUser } from '../auth';
 
 function Register() {
   const [username, setUsername] = useState('');
@@ -20,7 +20,7 @@ function Register() {
   };
 
   return (
-    <div className='screen'>
+    <div>
       <h1>הרשמה</h1>
       <form onSubmit={handleSubmit}>
         <div>
