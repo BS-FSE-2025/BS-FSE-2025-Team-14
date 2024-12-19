@@ -68,12 +68,30 @@ app.post('/login', async (req, res) => {
 app.post('/postRecommendation', async (req, res) => {
   const { name, description, role } = req.body;
 
+  if (!name || !description || !role) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
   try {
-    Recommendation.create({ name, description, role });
+    const recommendation = await Recommendation.create({ name, description, role });
+    res.status(201).json({ message: 'Recommendation added successfully', recommendation });
   } catch (err) {
-    console.log("failed :((((");
+    console.error("Failed to add recommendation:", err);
+    res.status(500).json({ error: 'Failed to add recommendation' });
   }
 });
+
+app.get('/recommendations', async (req, res) => {
+  try {
+    const recommendations = await Recommendation.find().sort({ date: -1 });
+    res.status(200).json(recommendations);
+  } catch (err) {
+    console.error("Failed to fetch recommendations:", err);
+    res.status(500).json({ error: 'Failed to fetch recommendations' });
+  }
+});
+
+
 
 // הפעלת השרת
 const PORT = process.env.PORT || 3001;

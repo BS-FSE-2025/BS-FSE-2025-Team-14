@@ -5,12 +5,65 @@ import './Home.css';
 function Home({ isAuthenticated, onLogin, onRegister, user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeForm, setActiveForm] = useState('login');
+  const [recommendations, setRecommendations] = useState([]);
+  const [newRecommendation, setNewRecommendation] = useState({
+    name: '',
+    description: '',
+    role: '',
+  });
+
+
 
   useEffect(() => {
     if (isAuthenticated) {
       setIsModalOpen(false); // אם המשתמש מחובר, נסגור את המודל
     }
-  }, [isAuthenticated]);
+      // Fetch existing recommendations
+      fetchRecommendations();
+    }, [isAuthenticated]);
+  
+    const fetchRecommendations = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/recommendations');
+        const data = await response.json();
+        setRecommendations(data);
+      } catch (err) {
+        console.error("Failed to fetch recommendations:", err);
+      }
+    };
+  
+    const handleRecommendationChange = (e) => {
+      const { name, value } = e.target;
+      setNewRecommendation((prev) => ({ ...prev, [name]: value }));
+    };
+  
+    const handleRecommendationSubmit = async (e) => {
+      e.preventDefault();
+      if (!newRecommendation.name || !newRecommendation.description || !newRecommendation.role) {
+        alert('Please fill out all fields');
+        return;
+      }
+  
+      try {
+        const response = await fetch('http://localhost:3001/postRecommendation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newRecommendation),
+        });
+  
+        const data = await response.json();
+        if (response.status === 201) {
+          setRecommendations((prevRecommendations) => [data.recommendation, ...prevRecommendations]);
+          setNewRecommendation({ name: '', description: '', role: '' }); // Reset form
+        } else {
+          alert(data.error || 'Failed to add recommendation');
+        }
+      } catch (err) {
+        console.error("Error adding recommendation:", err);
+      }
+    };
 
   const openModal = () => {
     if (!isAuthenticated) {
@@ -116,6 +169,54 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <h2>כותבים עלינו</h2>
         <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
       </div>
+      {/* Add Recommendation Form */}
+      
+          <div className="recommendation-form">
+            <h3>הוסף המלצה</h3>
+            <form onSubmit={handleRecommendationSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="שם"
+                value={newRecommendation.name}
+                onChange={handleRecommendationChange}
+              />
+              <textarea
+                name="description"
+                placeholder="תיאור"
+                value={newRecommendation.description}
+                onChange={handleRecommendationChange}
+              />
+              <select
+                name="role"
+                value={newRecommendation.role}
+                onChange={handleRecommendationChange}
+              >
+                <option value="">בחר תפקיד</option>
+                <option value="vet">וטרינר</option>
+                <option value="dogwalker">מטייל כלבים</option>
+              </select>
+              <button type="submit">הוסף המלצה</button>
+            </form>
+          </div>
+        
+
+        {/* Display Existing Recommendations */}
+        <div className="recommendations-list">
+          <h3>המלצות קיימות</h3>
+          {recommendations.length > 0 ? (
+            recommendations.map((recommendation) => (
+              <div key={recommendation._id} className="recommendation-item">
+                <h4>{recommendation.name}</h4>
+                <p>{recommendation.description}</p>
+                <p><strong>{recommendation.role}</strong></p>
+              </div>
+            ))
+          ) : (
+            <p>No recommendations yet</p>
+          )}
+        </div>
+
 
       <footer>
         <div className="footer-content">
