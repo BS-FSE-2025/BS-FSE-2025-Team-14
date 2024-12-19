@@ -427,7 +427,7 @@ footer {
 
 
 /* עיצוב טופס עסקים */
-.publish-form {
+.Publish-form {
     background-color: #f4f1e1;
     padding: 20px;
     border-radius: 8px;
@@ -438,16 +438,16 @@ footer {
     margin-right: auto; /* מרכז את הטופס */
 }
 
-.publish-form h3 {
+.Publish-form h3 {
     font-size: 1.8rem;
     color: #4a3627;
     margin-bottom: 15px;
     text-align: center; /* למרכז את כותרת הטופס */
 }
 
-.publish-form input,
-.publish-form textarea,
-.publish-form select {
+.Publish-form input,
+.Publish-form textarea,
+.Publish-form select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
@@ -458,11 +458,11 @@ footer {
     background-color: #fff;
 }
 
-.publish-form textarea {
+.Publish-form textarea {
     height: 150px;
 }
 
-.publish-form button {
+.Publish-form button {
     background-color: #4a3627;
     color: white;
     padding: 10px 20px;
@@ -475,12 +475,12 @@ footer {
     width: 100%;
 }
 
-.publish-form button:hover {
+.Publish-form button:hover {
     background-color: #7a5a45;
 }
 
 /* עיצוב תצוגת ההמלצות - מרכז את הרשימה */
-.publish-list {
+.Publish-list {
     margin-top: 40px;
     display: flex;
     flex-direction: column;
@@ -493,14 +493,14 @@ footer {
     margin-right: auto; /* מרכז את התצוגה */
 }
 
-.publish-item {
+.Publish-item {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.publish-item h4 {
+.Publish-item h4 {
     font-size: 1.6rem;
     color: #4a3627;
     margin-bottom: 10px;
@@ -508,18 +508,18 @@ footer {
 
 }
 
-.publish-item p {
+.Publish-item p {
     font-size: 1.2rem;
     color: #7a5a45;
 }
 
-.publish-item strong {
+.Publish-item strong {
     font-weight: bold;
     color: #4a3627;
 }
 
 /* עיצוב למצב שאין עסקים - מרכז את ההודעה */
-.publish-list p {
+.Publish-list p {
     font-size: 1.2rem;
     color: #4a3627;
     text-align: center;
