@@ -427,7 +427,7 @@ footer {
 
 
 /* עיצוב טופס עסקים */
-.Publish-form {
+.publish-form {
     background-color: #f4f1e1;
     padding: 20px;
     border-radius: 8px;
@@ -438,16 +438,16 @@ footer {
     margin-right: auto; /* מרכז את הטופס */
 }
 
-.Publish-form h3 {
+.publish-form h3 {
     font-size: 1.8rem;
     color: #4a3627;
     margin-bottom: 15px;
     text-align: center; /* למרכז את כותרת הטופס */
 }
 
-.Publish-form input,
-.Publish-form textarea,
-.Publish-form select {
+.publish-form input,
+.publish-form textarea,
+.publish-form select {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
