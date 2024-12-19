@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('./models/User'); // מודל המשתמשים
 const Recommendation = require('./models/Recommendation'); // מודל המלצות
-
+const Publish = require('./models/publish'); // מודל פרסום
 const app = express();
 app.use(express.json()); // מאפשר לקבל בקשות ב-JSON
 app.use(cors({
@@ -91,6 +91,31 @@ app.get('/recommendations', async (req, res) => {
   }
 });
 
+app.post('/postPublish', async (req, res) => {
+  const { name, description, role } = req.body;
+
+  if (!name || !description || !role) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const publish= await Publish.create({ name, description, role });
+    res.status(201).json({ message: 'publish added successfully', publish });
+  } catch (err) {
+    console.error("Failed to add publish:", err);
+    res.status(500).json({ error: 'Failed to add publish' });
+  }
+});
+
+app.get('/Publish', async (req, res) => {
+  try {
+    const publish = await Publish.find().sort({ date: -1 });
+    res.status(200).json(Publish);
+  } catch (err) {
+    console.error("Failed to fetch publish:", err);
+    res.status(500).json({ error: 'Failed to fetch publish' });
+  }
+});
 
 
 // הפעלת השרת

@@ -11,8 +11,12 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
     description: '',
     role: '',
   });
-
-
+  const [Publish, setPublish] = useState([]);
+  const [newPublish, setNewPublish] = useState({
+    name: '',
+    description: '',
+    role: '',
+  });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -65,6 +69,61 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
       }
     };
 
+
+    
+  useEffect(() => {
+    if (isAuthenticated) {
+      setIsModalOpen(false); // אם המשתמש מחובר, נסגור את המודל
+    }
+      // Fetch existing publish
+      fetchPublish();
+    }, [isAuthenticated]);
+  
+    const fetchPublish = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/publish');
+        const data = await response.json();
+        setPublish(data);
+      } catch (err) {
+        console.error("Failed to fetch publish:", err);
+      }
+    };
+  
+    const handlePublishChange = (e) => {
+      const { name, value } = e.target;
+      setNewRecommendation((prev) => ({ ...prev, [name]: value }));
+    };
+  
+    const handlePublishSubmit = async (e) => {
+      e.preventDefault();
+      if (!newPublish.name || !newPublish.description || !newPublish.role) {
+        alert('Please fill out all fields');
+        return;
+      }
+  
+      try {
+        const response = await fetch('http://localhost:3001/publish', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newPublish),
+        });
+  
+        const data = await response.json();
+        if (response.status === 201) {
+          setPublish((prevPublish) => [data.Publish, ...prevPublish]);
+          setNewPublish({ name: '', description: '', role: '' }); // Reset form
+        } else {
+          alert(data.error || 'Failed to add publish');
+        }
+      } catch (err) {
+        console.error("Error adding publish:", err);
+      }
+    };
+
+
+
   const openModal = () => {
     if (!isAuthenticated) {
       setIsModalOpen(true); // אם המשתמש לא מחובר, נפתח את המודל
@@ -91,6 +150,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
             <li><a href="#team">מי אנחנו</a></li>
             <li><a href="#features">אפשרויות</a></li>
             <li><a href="#reviews">כותבים עלינו</a></li>
+            <li><a href="#publish">עסקים מומלצים</a></li>
           </ul>
         </nav>
         {!isAuthenticated && (
@@ -216,6 +276,61 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
             <p>No recommendations yet</p>
           )}
         </div>
+
+        <div className="divider"></div>
+        <div className="section" id="publish">
+           <h2>בעלי מקצוע</h2>
+           <p>בעלי עסק מקצוענים שבוחרים PetPath.</p>
+           </div>
+{/* Add publish Form */}
+
+        <div className="publish-form">
+            <h3>הוסף עסק</h3>
+            <form onSubmit={handlePublishSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="שם"
+                value={newPublish.name}
+                onChange={handlePublishChange}
+              />
+              <textarea
+                name="description"
+                placeholder="תיאור"
+                value={newPublish.description}
+                onChange={handlePublishChange}
+              />
+              <select
+                name="role"
+                value={newPublish.role}
+                onChange={handlePublishChange}
+              >
+                <option value="">בחר תפקיד</option>
+                <option value="vet">וטרינר</option>
+                <option value="dogwalker">מטייל כלבים</option>
+              </select>
+              <button type="submit">הוסף עסק</button>
+            </form>
+          </div>
+        
+
+        {/* Display Existing Recommendations */}
+        <div className="Publish-list">
+          <h3>עסקים קיימים</h3>
+          {Publish.length > 0 ? (
+            recommendations.map((Publish) => (
+              <div key={Publish._id} className="Publish-item">
+                <h4>{Publish.name}</h4>
+                <p>{Publish.description}</p>
+                <p><strong>{Publish.role}</strong></p>
+              </div>
+            ))
+          ) : (
+            <p>No buisiness yet</p>
+          )}
+        </div>
+
+         <div className="divider"></div>
 
 
       <footer>
