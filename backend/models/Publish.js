@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
-const Publish = new mongoose.Schema({
+// יצירת הסכמה של Publish
+const publishSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -15,8 +16,8 @@ const Publish = new mongoose.Schema({
     type: String,
     required: [true, 'Role is required'],
     enum: {
-      values: ['vet', 'dogwalker'],
-      message: 'Role must be either vet or dogwalker'
+      values: ['vet', 'dogwalker', 'dogowner'],
+      message: 'Role must be either vet, dogwalker, or dogowner'
     }
   },
   date: {
@@ -25,6 +26,7 @@ const Publish = new mongoose.Schema({
   }
 });
 
-const  publish = mongoose.model('Recommendation', publishSchema);
+// יצירת המודל Publish
+const Publish = mongoose.model('Publish', publishSchema);
 
 module.exports = Publish;

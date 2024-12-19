@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('./models/User'); // מודל המשתמשים
 const Recommendation = require('./models/Recommendation'); // מודל המלצות
-const Publish = require('./models/publish'); // מודל פרסום
+const Publish = require('./models/Publish'); // מודל פרסום
 const app = express();
 app.use(express.json()); // מאפשר לקבל בקשות ב-JSON
 app.use(cors({
@@ -12,7 +12,7 @@ app.use(cors({
 }));
 
 // חיבור ל-MongoDB Atlas
-// const dbURI = 'mongodb+srv://yaelle:<levin>@cluster0.dnotx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // עדכן את ה-URI שלך
+
 const dbURI = 'mongodb+srv://yaelle:petpath2024@cluster0.dnotx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -107,10 +107,10 @@ app.post('/postPublish', async (req, res) => {
   }
 });
 
-app.get('/Publish', async (req, res) => {
+app.get('/publish', async (req, res) => {
   try {
     const publish = await Publish.find().sort({ date: -1 });
-    res.status(200).json(Publish);
+    res.status(200).json(publish);
   } catch (err) {
     console.error("Failed to fetch publish:", err);
     res.status(500).json({ error: 'Failed to fetch publish' });

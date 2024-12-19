@@ -91,28 +91,28 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
   
     const handlePublishChange = (e) => {
       const { name, value } = e.target;
-      setNewRecommendation((prev) => ({ ...prev, [name]: value }));
+      setNewPublish((prev) => ({ ...prev, [name]: value }));
     };
-  
+    
     const handlePublishSubmit = async (e) => {
       e.preventDefault();
       if (!newPublish.name || !newPublish.description || !newPublish.role) {
         alert('Please fill out all fields');
         return;
       }
-  
+    
       try {
-        const response = await fetch('http://localhost:3001/publish', {
+        const response = await fetch('http://localhost:3001/postPublish', { // תיקון לנתיב הנכון
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(newPublish),
         });
-  
+    
         const data = await response.json();
         if (response.status === 201) {
-          setPublish((prevPublish) => [data.Publish, ...prevPublish]);
+          setPublish((prevPublish) => [data.publish, ...prevPublish]); // תיקון איות
           setNewPublish({ name: '', description: '', role: '' }); // Reset form
         } else {
           alert(data.error || 'Failed to add publish');
@@ -121,6 +121,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         console.error("Error adding publish:", err);
       }
     };
+    
 
 
 
@@ -314,11 +315,11 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
           </div>
         
 
-        {/* Display Existing Recommendations */}
+        {/* Display Existing Publish */}
         <div className="Publish-list">
           <h3>עסקים קיימים</h3>
           {Publish.length > 0 ? (
-            recommendations.map((Publish) => (
+            Publish.map((Publish) => (
               <div key={Publish._id} className="Publish-item">
                 <h4>{Publish.name}</h4>
                 <p>{Publish.description}</p>
