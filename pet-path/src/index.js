@@ -6,8 +6,11 @@ import { BrowserRouter } from 'react-router-dom'; // הוספת BrowserRouter
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>  {/* עטיפה של האפליקציה ב- BrowserRouter */}
+    <BrowserRouter>  
       <App />
     </BrowserRouter>
   </React.StrictMode>
 );
+
+
+

@@ -12,7 +12,6 @@ const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
       case 'login':
         return (
           <div className="modal-content move-left">
-            <div className="image-side"></div>
             <div className="form-side">
               <Login />
             </div>
@@ -21,7 +20,6 @@ const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
       case 'register':
         return (
           <div className="modal-content move-right">
-            <div className="image-side"></div>
             <div className="form-side">
               <Register />
             </div>

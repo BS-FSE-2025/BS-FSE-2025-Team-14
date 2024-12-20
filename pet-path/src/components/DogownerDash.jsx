@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 
-function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
+
+function DogownerDash() {
   return (
     <div>
       <header>
         <div className="logo-container">
           <div className="logo">
-          <img src="media/logo.png.jpg" alt="logo" />
+            <img src="media\logo.png.jpg" alt="logo" />
           </div>
           <div className="site-name">
             <span>PetPath</span>
@@ -25,7 +26,7 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
       <div className="divider"></div>
 
       <div className="main-content">
-        <p>כאן יוצגו לוטרינר נתונים שונים</p>
+        <p>כאן יוצגו לבעל כלב נתונים שונים</p>
       </div>
 
       <div className="divider"></div>
@@ -39,5 +40,4 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
   );
 }
 
-export default VetDash;
-
+export default DogownerDash;

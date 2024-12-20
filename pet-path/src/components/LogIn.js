@@ -13,8 +13,14 @@ function Login() {
     e.preventDefault();
     try {
       const user = await loginUser(username, password, role);
-      if (user.role === role) {
-        navigate(`/dashboard/${user.role}`, { state: { user } });
+      if (user.role) {
+        // אם המשתמש הוא וטרינר, נעביר אותו לדף הווטרינר
+        if (role === 'vet') {
+          navigate('/dashboard/vet', { state: { user } }); // ניווט לדף הווטרינר
+        } 
+        if (role === 'dogowner'){
+          navigate('/dashboard/dogowner', { state: { user } });
+        }
       } else {
         alert("הסוג לא תואם! נסה שנית.");
       }
