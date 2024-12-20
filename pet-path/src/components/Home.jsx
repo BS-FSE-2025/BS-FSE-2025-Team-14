@@ -301,7 +301,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
               />
               <textarea
                 name="description"
-                placeholder="תיאור"
+                placeholder="השירותים שהעסק שלי מציע"
                 value={newPublish.description}
                 onChange={handlePublishChange}
               />
