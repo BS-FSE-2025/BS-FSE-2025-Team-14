@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import './Home.css';
+import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 
 function Home({ isAuthenticated, onLogin, onRegister, user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -136,6 +137,10 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
   return (
     <div>
       <header>
+      <button id="language-switcher" onClick={switchLanguage}>
+          עברית / English
+        </button>
+        
         <div className="logo-container">
           <div className="logo">
             <img src="media/logo.png.jpg" alt="logo" />
@@ -154,6 +159,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
             <li><a href="#publish">עסקים מומלצים</a></li>
           </ul>
         </nav>
+        
         {!isAuthenticated && (
           <button className="register-button" onClick={openModal}>
             הצטרפות
@@ -178,7 +184,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <h2>אודות</h2>
         <p>PetPath –מערכת חכמה לתכנון טיולים בטוחים לכלבים</p>
         <p>המסייעת לבחור את הזמן והמקום האידיאליים לטיול ופעילויות חוץ עם כלבים</p>
-        <p>תוך התחשבות בתנאי מזג האוויר, טמפרטורת הקרקע ורמת הקרינה.</p>
+        <p>תוך התחשבות בתנאי מזג האוויר, טמפרטורת הקרקע ורמת הקרינה</p>
       </div>
 
       <div className="divider"></div>
@@ -189,7 +195,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
           <li>טיולים בטוחים בהתאם לטמפרטורה</li>
           <li>מעקב אחרי בטיחות הקרקע בזמן אמת</li>
           <li>הצגת מפות ומסלולים מומלצים</li>
-          <li>תכנון לו"ז בהתאם לטמפרטורת הקרקע</li>
+          <li>תכנון לוז בהתאם לטמפרטורת הקרקע</li>
         </ul>
         <p>ומה עוד? הצטרפו אלינו וגלו!</p>
       </div>
@@ -216,12 +222,10 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
             <p>הדר טרבלסי</p>
           </div>
         </div>
-        <p>
-          <strong>קבוצה 14</strong> היא קבוצה של סטודנטים שמאמינים שבעזרת הטכנולוגיות המתקדמות של היום,
-          ניתן לשפר את איכות החיים של כלבים ובעליהם. החזון שלנו הוא ליצור כלים חכמים שיעזרו לשמור על בריאותם
-          ושלומם של החברים הכי טובים שלנו על ארבע, תוך מתן פתרונות מודרניים לאתגרים יומיומיים.
-          יחד, אנחנו פועלים מתוך אהבה לבעלי חיים ומתוך אמונה שהטכנולוגיה יכולה לשנות חיים - גם של כלבים וגם של בני אדם.
-        </p>
+        <p> <strong>קבוצה 14</strong>  </p>
+        <p>אנחנו קבוצה של סטודנטים שמאמינים שעם טכנולוגיה מתקדמת אפשר לשפר את איכות החיים של החברים הכי טובים שלנו על ארבע  </p>
+        <p>החזון שלנו הוא לפתח כלים חכמים לשמירה על בריאותם ולפתרון אתגרים יומיומיים  </p>
+        <p>אנחנו פועלים מתוך אהבה לבעלי חיים ומאמינים שהטכנולוגיה יכולה לשפר חיים של כלבים ובני אדם.</p>
       </div>
 
       <div className="divider"></div>
@@ -281,7 +285,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <div className="divider"></div>
         <div className="section" id="publish">
            <h2>בעלי מקצוע</h2>
-           <p>בעלי עסק מקצוענים שבוחרים PetPath.</p>
+           <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
            </div>
 {/* Add publish Form */}
 
@@ -297,7 +301,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
               />
               <textarea
                 name="description"
-                placeholder="תיאור"
+                placeholder="השירותים שהעסק שלי מציע"
                 value={newPublish.description}
                 onChange={handlePublishChange}
               />

@@ -524,3 +524,20 @@ footer {
     color: #4a3627;
     text-align: center;
 }
+#language-switcher {
+    position: fixed; /* מיקום קבוע במסך */
+    bottom: 20px;    /* 20px מהחלק התחתון של המסך */
+    right: 20px;     /* 20px מהקצה הימני של המסך */
+    padding: 10px 20px; /* ריווח בתוך הכפתור */
+    background-color: #8e7c66; /* צבע רקע בגוון חום-ים ניטרלי */
+    color: white;    /* צבע טקסט */
+    border: none;    /* להסיר את הגבולות */
+    border-radius: 5px; /* קצוות מעוגלים */
+    font-size: 16px;  /* גודל הפונט */
+    cursor: pointer; /* מראה של סמן יד */
+    z-index: 1000;    /* מוודא שהכפתור יופיע מעל אלמנטים אחרים */
+}
+
+#language-switcher:hover {
+    background-color: #7a6a4d; /* שינוי צבע הרקע בהעברה לגוון כהה יותר */
+}
