@@ -1,10 +1,9 @@
 const request = require('supertest');
-const app = require('../backend/server');  // ייבוא של האפליקציה שלך
+const app = require('../backend/server'); 
 
 let server;
 
 beforeAll(async () => {
-  // פתח את השרת ב-port 3000
   server = app.listen(3000); 
 });
 
