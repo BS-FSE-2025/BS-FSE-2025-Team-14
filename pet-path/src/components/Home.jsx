@@ -260,6 +260,8 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
                 <option value="">בחר תפקיד</option>
                 <option value="vet">וטרינר</option>
                 <option value="dogwalker">מטייל כלבים</option>
+                <option value="dogowner">בעל כלב</option>
+
               </select>
               <button type="submit">הוסף המלצה</button>
             </form>

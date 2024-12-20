@@ -15,8 +15,8 @@ const recommendationSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Role is required'],
     enum: {
-      values: ['vet', 'dogwalker'],
-      message: 'Role must be either vet or dogwalker'
+      values: ['vet', 'dogwalker', 'dogowner'],
+      message: 'Role must be either dogowner, vet or dogwalker'
     }
   },
   date: {

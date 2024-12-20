@@ -84,7 +84,7 @@ describe('Recommendation API Tests', () => {
       const testRecommendation = await Recommendation.create({
         name: 'דר כהן',
         description: 'וטרינר מעולה',
-        role: 'vet'
+        role: 'vet' ,
       });
 
       const response = await request(app)
