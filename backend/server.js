@@ -118,8 +118,13 @@ app.get('/publish', async (req, res) => {
 });
 
 
-// הפעלת השרת
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+// הפעלת השרת רק אם הקובץ נריץ ישירות
+if (require.main === module) {
+  const PORT = process.env.PORT || 3001;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;  // ייצוא של האפליקציה לבדיקות
