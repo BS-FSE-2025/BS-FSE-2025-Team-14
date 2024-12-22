@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
+import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 
-function DogownerDash({ user }) {
+function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
   const [recommendations, setRecommendations] = useState([]);
   const [newRecommendation, setNewRecommendation] = useState({
     name: '',
     description: '',
     role: '',
   });
-  const [publish, setPublish] = useState([]);
+  const [Publish, setPublish] = useState([]);
   const [newPublish, setNewPublish] = useState({
     name: '',
     description: '',
@@ -17,7 +18,6 @@ function DogownerDash({ user }) {
 
   useEffect(() => {
     fetchRecommendations();
-    fetchPublish();
   }, []);
 
   const fetchRecommendations = async () => {
@@ -26,7 +26,7 @@ function DogownerDash({ user }) {
       const data = await response.json();
       setRecommendations(data);
     } catch (err) {
-      console.error('Failed to fetch recommendations:', err);
+      console.error("Failed to fetch recommendations:", err);
     }
   };
 
@@ -54,14 +54,18 @@ function DogownerDash({ user }) {
       const data = await response.json();
       if (response.status === 201) {
         setRecommendations((prevRecommendations) => [data.recommendation, ...prevRecommendations]);
-        setNewRecommendation({ name: '', description: '', role: '' });
+        setNewRecommendation({ name: '', description: '', role: '' }); // Reset form
       } else {
         alert(data.error || 'Failed to add recommendation');
       }
     } catch (err) {
-      console.error('Error adding recommendation:', err);
+      console.error("Error adding recommendation:", err);
     }
   };
+
+  useEffect(() => {
+    fetchPublish();
+  }, []);
 
   const fetchPublish = async () => {
     try {
@@ -69,7 +73,7 @@ function DogownerDash({ user }) {
       const data = await response.json();
       setPublish(data);
     } catch (err) {
-      console.error('Failed to fetch publish:', err);
+      console.error("Failed to fetch publish:", err);
     }
   };
 
@@ -97,21 +101,25 @@ function DogownerDash({ user }) {
       const data = await response.json();
       if (response.status === 201) {
         setPublish((prevPublish) => [data.publish, ...prevPublish]);
-        setNewPublish({ name: '', description: '', role: '' });
+        setNewPublish({ name: '', description: '', role: '' }); // Reset form
       } else {
         alert(data.error || 'Failed to add publish');
       }
     } catch (err) {
-      console.error('Error adding publish:', err);
+      console.error("Error adding publish:", err);
     }
   };
 
   return (
     <div>
       <header>
+      <button id="language-switcher" onClick={switchLanguage}>
+          עברית / English
+        </button>
+        
         <div className="logo-container">
           <div className="logo">
-            <img src="media/logo.png.jpg" alt="logo" />
+          <img src="/media/logo.png.jpg" alt="logo" />
           </div>
           <div className="site-name">
             <span>PetPath</span>
@@ -120,130 +128,125 @@ function DogownerDash({ user }) {
         </div>
         <nav>
           <ul>
-            <li><a href="#profile">פרופיל</a></li>
-            <li><a href="#settings">הגדרות המערכת</a></li>
-            <li><a href="#support">עזרה ותמיכה</a></li>
+          <li><a href="#reviews">פרופיל</a></li>
+            <li><a href="#reviews">כותבים עלינו</a></li>
+            <li><a href="#publish">עסקים מומלצים</a></li>
           </ul>
         </nav>
       </header>
 
-      <div className="divider"></div>
-
-      <div
-        className="main-content"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '50vh',
-          textAlign: 'center',
-        }}
-      >
-        <h1>ברוך הבא!</h1>
-        <p>כאן יוצגו לבעל כלב נתונים שונים</p>
-      </div>
 
       <div className="divider"></div>
-
+        <p style={{ textAlign: 'center' }}>כאן יוצגו לבעל כלב נתונים שונים</p>
+     
+      <div className="divider"></div>
       <div className="section" id="reviews">
         <h2>כותבים עלינו</h2>
         <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
       </div>
+      
+          <div className="recommendation-form">
+            <h3>הוסף המלצה</h3>
+            <form onSubmit={handleRecommendationSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="שם"
+                value={newRecommendation.name}
+                onChange={handleRecommendationChange}
+              />
+              <textarea
+                name="description"
+                placeholder="תיאור"
+                value={newRecommendation.description}
+                onChange={handleRecommendationChange}
+              />
+              <select
+                name="role"
+                value={newRecommendation.role}
+                onChange={handleRecommendationChange}
+              >
+                <option value="">בחר תפקיד</option>
+                <option value="vet">וטרינר</option>
+                <option value="dogwalker">מטייל כלבים</option>
+                <option value="dogowner">בעל כלב</option>
+              </select>
+              <button type="submit">הוסף המלצה</button>
+            </form>
+          </div>
 
-      <div className="divider"></div>
+        <div className="recommendations-list">
+          <h3>המלצות קיימות</h3>
+          {recommendations.length > 0 ? (
+            recommendations.map((recommendation) => (
+              <div key={recommendation._id} className="recommendation-item">
+                <h4>{recommendation.name}</h4>
+                <p>{recommendation.description}</p>
+                <p><strong>{recommendation.role}</strong></p>
+              </div>
+            ))
+          ) : (
+            <p>No recommendations yet</p>
+          )}
+        </div>
 
-      <div className="recommendation-form">
-        <h3>הוסף המלצה</h3>
-        <form onSubmit={handleRecommendationSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="שם"
-            value={newRecommendation.name}
-            onChange={handleRecommendationChange}
-          />
-          <textarea
-            name="description"
-            placeholder="תיאור"
-            value={newRecommendation.description}
-            onChange={handleRecommendationChange}
-          />
-          <select
-            name="role"
-            value={newRecommendation.role}
-            onChange={handleRecommendationChange}
-          >
-            <option value="">בחר תפקיד</option>
-            <option value="vet">וטרינר</option>
-            <option value="dogwalker">מטייל כלבים</option>
-          </select>
-          <button type="submit">הוסף המלצה</button>
-        </form>
-      </div>
+        <div className="divider"></div>
+        <div className="section" id="publish">
+           <h2>בעלי מקצוע</h2>
+           <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
+           </div>
 
-      <div className="recommendations-list">
-        <h3>המלצות קיימות</h3>
-        {recommendations.length > 0 ? (
-          recommendations.map((recommendation) => (
-            <div key={recommendation._id} className="recommendation-item">
-              <h4>{recommendation.name}</h4>
-              <p>{recommendation.description}</p>
-              <p><strong>{recommendation.role}</strong></p>
-            </div>
-          ))
-        ) : (
-          <p>אין המלצות כרגע</p>
-        )}
-      </div>
+        <div className="publish-form">
+            <h3>הוסף עסק</h3>
+            <form onSubmit={handlePublishSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="שם"
+                value={newPublish.name}
+                onChange={handlePublishChange}
+              />
+              <textarea
+                name="description"
+                placeholder="השירותים שהעסק שלי מציע"
+                value={newPublish.description}
+                onChange={handlePublishChange}
+              />
+              <select
+                name="role"
+                value={newPublish.role}
+                onChange={handlePublishChange}
+              >
+                <option value="">בחר תפקיד</option>
+                <option value="vet">וטרינר</option>
+                <option value="dogwalker">מטייל כלבים</option>
+              </select>
+              <button type="submit">הוסף עסק</button>
+            </form>
+          </div>
 
-      <div className="divider"></div>
+        <div className="Publish-list">
+          <h3>עסקים קיימים</h3>
+          {Publish.length > 0 ? (
+            Publish.map((Publish) => (
+              <div key={Publish._id} className="Publish-item">
+                <h4>{Publish.name}</h4>
+                <p>{Publish.description}</p>
+                <p><strong>{Publish.role}</strong></p>
+              </div>
+            ))
+          ) : (
+            <p>No buisiness yet</p>
+          )}
+        </div>
 
-      <div className="publish-form">
-        <h3>הוסף עסק</h3>
-        <form onSubmit={handlePublishSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="שם"
-            value={newPublish.name}
-            onChange={handlePublishChange}
-          />
-          <textarea
-            name="description"
-            placeholder="תיאור"
-            value={newPublish.description}
-            onChange={handlePublishChange}
-          />
-          <select
-            name="role"
-            value={newPublish.role}
-            onChange={handlePublishChange}
-          >
-            <option value="">בחר תפקיד</option>
-            <option value="vet">וטרינר</option>
-            <option value="dogwalker">מטייל כלבים</option>
-          </select>
-          <button type="submit">הוסף עסק</button>
-        </form>
-      </div>
+         <div className="divider"></div>
 
-      <div className="publish-list">
-        <h3>עסקים קיימים</h3>
-        {publish.length > 0 ? (
-          publish.map((pub) => (
-            <div key={pub._id} className="publish-item">
-              <h4>{pub.name}</h4>
-              <p>{pub.description}</p>
-              <p><strong>{pub.role}</strong></p>
-            </div>
-          ))
-        ) : (
-          <p>אין עסקים כרגע</p>
-        )}
-      </div>
-
-      <div className="divider"></div>
+      <footer>
+        <div className="footer-content">
+          <p>&copy; 2024 PetPath. כל הזכויות שמורות.</p>
+        </div>
+      </footer>
     </div>
   );
 }
