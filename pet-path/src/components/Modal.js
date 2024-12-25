@@ -11,18 +11,14 @@ const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
     switch (activeForm) {
       case 'login':
         return (
-          <div className="modal-content move-left">
-            <div className="form-side">
-              <Login />
-            </div>
+          <div className="form-side">
+            <Login />
           </div>
         );
       case 'register':
         return (
-          <div className="modal-content move-right">
-            <div className="form-side">
-              <Register />
-            </div>
+          <div className="form-side">
+            <Register />
           </div>
         );
       default:
@@ -50,7 +46,16 @@ const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
             הרשמה
           </button>
         </div>
-        {renderActiveForm()}
+
+        <div className={`modal-content ${activeForm === 'login' ? 'move-left' : 'move-right'}`}>
+          <div className="image-side">
+            <img
+              src={activeForm === 'login' ? "media/login.jpg" : "media/register.jpg"} 
+              alt={activeForm === 'login' ? "Login Image" : "Register Image"}
+            />
+          </div>
+          {renderActiveForm()}
+        </div>
       </div>
     </div>
   );

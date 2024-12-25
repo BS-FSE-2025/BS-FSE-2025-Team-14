@@ -1,4 +1,3 @@
-// Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../auth';
@@ -34,28 +33,43 @@ function Login() {
     <div>
       <h2>התחבר</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="שם משתמש"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="סיסמה"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-        >
-          <option value="dogowner">בעל כלב</option>
-          <option value="dogwalker">דוג ווקר</option>
-          <option value="vet">וטרינר</option>
-        </select>
+        <div>
+          <label htmlFor="username">שם משתמש:</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="הכנס שם משתמש"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="password">סיסמה:</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="הכנס סיסמה"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="role">בחר תפקיד:</label>
+          <select
+            id="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="dogowner">בעל כלב</option>
+            <option value="dogwalker">דוג ווקר</option>
+            <option value="vet">וטרינר</option>
+          </select>
+        </div>
+
         <button type="submit">התחבר</button>
       </form>
     </div>

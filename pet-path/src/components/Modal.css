@@ -1,21 +1,19 @@
-/* modal.css */
-
 /* הגדרת המודל */
 .modal {
-    width: 60%; /* לא להרחיב את המודל מדי */
-    height: 70%; /* גובה המודל */
+    width: 60%;
+    height: 70%;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
+    background-color: #F8F1E7;
     border-radius: 10px;
     overflow: hidden;
     z-index: 999;
     visibility: hidden; /* התחל במצב מוסתר */
     opacity: 0;
     transition: opacity 0.3s ease, visibility 0s 0.3s;
-    border: 3px solid #4a3627; /* מסגרת חומה */
+    border: 3px solid #4a3627;
 }
 
 /* הצגת המודל */
@@ -25,20 +23,31 @@
     transition: opacity 0.3s ease, visibility 0s;
 }
 
+.image-side, .form-side {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center; /* למרכז את התוכן */
+    justify-content: center; /* למרכז את התוכן */
+    transition: transform 0.5s ease;
+}
+
 /* עיצוב התמונה */
 .image-side {
-    background-image: url('//media/paw2.jpg'); /* וודא שהתמונה נטענת */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat; /* אל תעשה חזרה אם התמונה קטנה */
-    height: 100%;
-    width: 50%;
-    transition: transform 0.5s ease;
+    z-index: 2; /* התמונה תהיה מעל הטופס */
+}
+
+.image-side img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 /* עיצוב החלק עם הטופס */
 .form-side {
-    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -47,29 +56,39 @@
     background-color: #F8F1E7;
     border-radius: 8px;
     overflow-y: auto;
-    height: 100%; /* ודא שהטופס לא ייצא החוצה */
-    box-sizing: border-box; /* מוסיף מרווח פנימי לפנים אלמנט */
+    height: 100%;
+    box-sizing: border-box;
+    z-index: 1; /* הטופס יהיה מאחורי התמונה */
 }
 
 /* מעבר של התמונה */
 .move-left .image-side {
-    transform: translateX(-100%); /* תמונה זזה שמאלה */
+    transform: translateX(100%);
 }
 
 .move-right .image-side {
-    transform: translateX(0%); /* תמונה זזה ימינה */
+    transform: translateX(0%);
 }
 
 /* מעבר של הטופס */
 .move-left .form-side {
-    transform: translateX(100%); /* טופס הרשמה זז ימינה */
+    transform: translateX(0%);
 }
 
 .move-right .form-side {
-    transform: translateX(0%); /* טופס התחברות זז שמאלה */
+    transform: translateX(100%);
 }
 
 /* כפתורים בתפריט */
+.tabs {
+    position: absolute;
+    bottom: 20px;  /* ממקם את הכפתורים בתחתית המודל */
+    left: 50%;     /* ממקם את הכפתורים במרכז */
+    transform: translateX(-50%); /* מרכז את הכפתורים באופן מדויק */
+    z-index: 3;    /* כפתורים מעל התמונה והטופס */
+    margin-bottom: 20px;
+}
+
 .tabs button {
     background-color: #9E7B56;
     color: white;
@@ -101,8 +120,70 @@
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
+    z-index: 9999; /* הכפתור תמיד יהיה מעל כל השאר */
 }
 
 .close-btn:hover {
     background-color: #7F5C3E;
+}
+
+/* העיצוב הכללי של טופס התחברות וההרשמה */
+.form-side input,
+.form-side button {
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #4b3131;
+    border-radius: 8px;
+    margin: 10px 0;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* שינוי גבול שדה כשהעכבר עובר עליו */
+.form-side input:focus,
+.form-side button:focus {
+    border-color: #63503c;
+}
+
+/* עיצוב כפתור של התחברות וההרשמה */
+.form-side button {
+    background-color: #9E7B56;
+    color: white;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    width: 100%; /* הכפתור תופס את כל הרוחב */
+}
+
+/* שינוי צבע על hover */
+.form-side button:hover {
+    background-color: #7F5C3E;
+}
+
+/* שינוי צבע כפתור disabled */
+.form-side button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* שדות הטופס תחת כותרת */
+.form-side label {
+    font-size: 14px;
+    color: #4a3627;
+    margin-bottom: 5px;
+}
+
+.form-side input {
+    background-color: #fff;
+    color: #4a3627;
+    border: 1px solid #9E7B56;
+}
+
+
+/* העיצוב הכללי לאיזור הטופס בתוך המודל */
+.modal-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
