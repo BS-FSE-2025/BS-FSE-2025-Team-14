@@ -13,7 +13,9 @@ function Login() {
     e.preventDefault();
     try {
       const user = await loginUser(username, password, role);
+      
       if (user.role) {
+        localStorage.setItem('user', JSON.stringify(user));
         if (role === 'vet') {
           navigate('/dashboard/vet', { state: { user } }); // ניווט לדף הווטרינר
         } 
