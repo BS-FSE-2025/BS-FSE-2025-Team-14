@@ -1,27 +1,29 @@
-// Login.test.js
-import { render, fireEvent } from '@testing-library/react';
-import Login from './Login'; 
-import { useNavigate } from 'react-router-dom';
+import React from 'react'; 
+import { fireEvent, render, screen } from '@testing-library/react';
+import Login from '../pet-path/src/components/LogIn';  
+import { useNavigate } from 'react-router-dom';  
 
-// Mock עבור useNavigate
+
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
 }));
 
-describe('Login', () => {
-  it('מנווטת כראוי לפי התפקיד של המשתמש', async () => {
-    const navigate = require('react-router-dom').useNavigate();
-    const { getByPlaceholderText, getByText, getByRole } = render(<Login />);
+describe('Login Component', () => {
+  it('מנווטת כראוי לווטרינר אחרי התחברות', async () => {
+    const navigate = useNavigate(); 
 
-    // מילוי הטופס עם נתונים
-    fireEvent.change(getByPlaceholderText(/שם משתמש/i), { target: { value: 'dogowner' } });
-    fireEvent.change(getByPlaceholderText(/סיסמה/i), { target: { value: 'password123' } });
-    fireEvent.change(getByRole('combobox'), { target: { value: 'dogowner' } });
+    
+    render(<Login />); 
 
-    // שליחת הטופס
-    fireEvent.click(getByText(/התחבר/i));
+    
+    fireEvent.change(screen.getByPlaceholderText(/שם משתמש/i), { target: { value: 'vetuser' } });
+    fireEvent.change(screen.getByPlaceholderText(/סיסמה/i), { target: { value: 'password123' } });
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'vet' } });
 
-    // בדיקה אם הפונקציה navigate נקראה עם המסלול הנכון
-    expect(navigate).toHaveBeenCalledWith('/dashboard/dogowner', expect.any(Object));
+    
+    fireEvent.submit(screen.getByRole('form')); 
+
+  
+    expect(navigate).toHaveBeenCalledWith('/dashboard/vet', expect.any(Object));
   });
 });
