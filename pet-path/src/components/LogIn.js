@@ -6,6 +6,7 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('dogowner');
+  
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -13,12 +14,14 @@ function Login() {
     try {
       const user = await loginUser(username, password, role);
       if (user.role) {
-        // אם המשתמש הוא וטרינר, נעביר אותו לדף הווטרינר
         if (role === 'vet') {
           navigate('/dashboard/vet', { state: { user } }); // ניווט לדף הווטרינר
         } 
         if (role === 'dogowner'){
           navigate('/dashboard/dogowner', { state: { user } });
+        }
+        if (role === 'dogwalker'){
+          navigate('/dashboard/dogwalker', { state: { user } });
         }
       } else {
         alert("הסוג לא תואם! נסה שנית.");
