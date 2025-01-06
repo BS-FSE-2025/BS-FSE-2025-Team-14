@@ -16,21 +16,33 @@ function Login() {
       
       if (user.role) {
         localStorage.setItem('user', JSON.stringify(user));
-        if (role === 'vet') {
+    
+        // בדיקת התאמה מפורשת של role לפני ניווט
+        if (role === 'vet' && user.role === 'vet') {
           navigate('/dashboard/vet', { state: { user } }); // ניווט לדף הווטרינר
         } 
-        if (role === 'dogowner'){
-          navigate('/dashboard/dogowner', { state: { user } });
-        }
-        if (role === 'dogwalker'){
-          navigate('/dashboard/dogwalker', { state: { user } });
+        else if (role === 'dogowner' && user.role === 'dogowner') {
+          navigate('/dashboard/dogowner', { state: { user } }); // ניווט לדף בעל הכלב
+        } 
+        else if (role === 'dogwalker' && user.role === 'dogwalker') {
+          navigate('/dashboard/dogwalker', { state: { user } }); // ניווט לדף דוג ווקר
+        } 
+        else {
+          alert("התפקיד שנבחר אינו תואם לתפקיד במערכת!");
         }
       } else {
         alert("הסוג לא תואם! נסה שנית.");
       }
     } catch (error) {
       console.error("Login failed", error);
-      alert("התחברות נכשלה!");
+      // הצגת הודעת שגיאה מדויקת ב-alert
+      if (error.response && error.response.data && error.response.data.error) {
+        alert(`שגיאה: ${error.response.data.error}`);
+      } else if (error.message) {
+        alert(`שגיאה: ${error.message}`);
+      } else {
+        alert("שגיאה לא ידועה! נסה שוב.");
+      }
     }
   };
 

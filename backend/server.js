@@ -51,22 +51,31 @@ app.post('/register', async (req, res) => {
 
 // API להתחברות (אימות משתמש)
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, role} = req.body;
+  try{
+   // חיפוש המשתמש במסד הנתונים
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(400).json({ error: 'Invalid username or password' });
+    }
 
-  // חיפוש המשתמש במסד הנתונים
-  const user = await User.findOne({ username });
-  if (!user) {
-    return res.status(400).json({ error: 'Invalid username or password' });
+    // אימות תפקיד
+    if (user.role !== role) {
+      return res.status(403).json({ error: 'Role mismatch' });
+    }
+
+    // השוואת סיסמאות
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: 'Invalid username or password' });
+    }
+
+    // החזרת נתונים על המשתמש אם הסיסמה נכונה
+    res.status(200).json({ message: 'Login successful', user });
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Server error during login' });
   }
-
-  // השוואת סיסמאות
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) {
-    return res.status(400).json({ error: 'Invalid username or password' });
-  }
-
-  // החזרת נתונים על המשתמש אם הסיסמה נכונה
-  res.status(200).json({ message: 'Login successful', user });
 });
 
 app.post('/postRecommendation', async (req, res) => {
