@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import VetDash from './components/VetDash'; 
 import DogownerDash from './components/DogownerDash';
-//2
+//21
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // State for checking if user is logged in
   const [user, setUser] = useState(null); // To store user info after login/register
