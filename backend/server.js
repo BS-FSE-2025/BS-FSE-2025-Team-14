@@ -79,14 +79,14 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/postRecommendation', async (req, res) => {
-  const { name, description, role } = req.body;
+  const { name, description, role, rating } = req.body;
 
-  if (!name || !description || !role) {
+  if (!name || !description || !role || !rating) {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
   try {
-    const recommendation = await Recommendation.create({ name, description, role });
+    const recommendation = await Recommendation.create({ name, description, role, rating });
     res.status(201).json({ message: 'Recommendation added successfully', recommendation });
   } catch (err) {
     console.error("Failed to add recommendation:", err);
