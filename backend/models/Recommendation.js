@@ -19,6 +19,16 @@ const recommendationSchema = new mongoose.Schema({
       message: 'Role must be either dogowner, vet or dogwalker'
     }
   },
+  rating: {
+    type: Number,
+    required: true,
+    min: [1, 'Rating must be at least 1'],
+    max: [5, 'Rating cannot exceed 5'],
+    validate: {
+      validator: Number.isInteger,
+      message: 'Rating must be an integer'
+    }
+  },
   date: {
     type: Date,
     default: Date.now,

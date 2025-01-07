@@ -263,6 +263,19 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
                 <option value="dogowner">בעל כלב</option>
 
               </select>
+              <label>דירוג:</label>
+              <select
+                name="rating"
+                value={newRecommendation.rating || ''}
+                onChange={handleRecommendationChange}
+              >
+                <option value="">בחר דירוג</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+              </select>
               <button type="submit">הוסף המלצה</button>
             </form>
           </div>
@@ -277,12 +290,22 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
                 <h4>{recommendation.name}</h4>
                 <p>{recommendation.description}</p>
                 <p><strong>{recommendation.role}</strong></p>
+                <p>דירוג:</p>
+                <div className="star-rating">
+                  {[...Array(5)].map((star, index) => (
+                    <span key={index} style={{ color: index < recommendation.rating ? 'gold' : 'gray' }}>
+                      ★
+                    </span>
+                  ))}
+                </div>
               </div>
             ))
           ) : (
             <p>No recommendations yet</p>
           )}
         </div>
+
+
 
         <div className="divider"></div>
         <div className="section" id="publish">

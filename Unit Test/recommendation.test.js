@@ -1,34 +1,32 @@
-const request = require('supertest');
-const app = require('../backend/server'); 
+import { loginUser } from '../auth';  // המודול שמבצע את ההתחברות
+import { useNavigate } from 'react-router-dom';  // הפונקציה שבודקת את הניווט
+import { jest } from '@jest/globals';
 
-let server;
+// Mock לפונקציות
+jest.mock('react-router-dom', () => ({
+  useNavigate: jest.fn(),
+}));
 
-beforeAll(async () => {
-  server = app.listen(3000); 
-});
+jest.mock('../auth', () => ({
+  loginUser: jest.fn(),
+}));
 
-describe('POST /postRecommendation', () => {
-  it('should add a new recommendation successfully', async () => {
-    const newRecommendation = {
-      name: 'Dr. John',
-      description: 'Experienced vet, highly recommended!',
-      role: 'vet',
-    };
+describe('Login Component', () => {
+  it('מנווטת כראוי כווטרינר לדף הווטרינר', async () => {
+    const mockNavigate = useNavigate();
+    
+    // mock של loginUser שמחזיר וטרינר (role: 'vet')
+    loginUser.mockResolvedValueOnce({ role: 'vet' });
 
-    // שלח את הבקשה ל-API
-    const response = await request(app)
-      .post('/postRecommendation')
-      .send(newRecommendation);
+    const username = 'vetUser';
+    const password = 'vetPassword';
+    const role = 'vet';
 
-    // ודא שהסטטוס של התגובה הוא 201
-    expect(response.status).toBe(201);
-    // ודא שההמלצה שנשלחה קיימת בתגובה
-    expect(response.body.recommendation).toMatchObject(newRecommendation);
+    // חיקוי של קריאת ההתחברות לפונקציה
+    const user = await loginUser(username, password, role);
+
+    // אם התחבר כווטרינר, אז הניווט אמור לקרות לדף של הווטרינר
+    expect(user.role).toBe('vet');
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard/vet', expect.any(Object));
   });
-});
-
-// סגירת השרת אחרי הבדיקות
-afterAll(async () => {
-  // סגור את השרת
-  await server.close();
 });

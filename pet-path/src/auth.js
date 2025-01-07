@@ -1,13 +1,13 @@
 // auth.js
 
 // פונקציה להתחברות
-export const loginUser = async (username, password) => {
+export const loginUser = async (username, password, role) => {
   const res = await fetch("http://localhost:3001/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({username, password}),
+    body: JSON.stringify({username, password, role}),
   });
 
   const result = await res.json();
