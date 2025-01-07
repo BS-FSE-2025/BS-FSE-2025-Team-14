@@ -1,0 +1,58 @@
+/* Styles for Alerts */
+.alerts-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    font-family: Arial, sans-serif;
+  }
+  
+  .alert-item {
+    background-color: #ff6666;
+    color: white;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  .alert-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+  }
+  
+  .alerts-btn {
+    position: fixed;
+    bottom: 100px;    /* מיקום מעל הכפתור */
+    right: 20px;      /* מיקום בצד ימין של המסך */
+    padding: 10px 20px;
+    background-color: #8e7c66;  /* גוון חום */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .alerts-btn:hover {
+    background-color: #7a6a4d;  /* גוון כהה יותר בהעברה */
+  }
+  
+  .alerts-btn:focus {
+    outline: none;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
