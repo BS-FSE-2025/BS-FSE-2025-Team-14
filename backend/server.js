@@ -429,10 +429,26 @@ async function fetchReadingsForSpecificDates() {
     console.error("Error fetching readings for specific dates:", error.message);
   }
 }
-
-
 let lastReadingsData = []; // רשימה שמכילה נתונים על ה30 משיכות האחרונות שיש במונגו בשעה עכשיו בתאריך האחרון שקיים במונגו
 
+// קריאה ל-API כדי למשוך את הנתונים
+app.get("/lastReadingsData", async (req, res) => {
+  try {
+    // אם אין נתונים במשתנה lastReadingsData
+    if (lastReadingsData.length === 0) {
+      return res.status(404).json({ error: "No data available" });
+    }
+
+    // מחזירים את המידע שמאוחסן במשתנה lastReadingsData
+    res.status(200).json(lastReadingsData);
+  } catch (error) {
+    console.error("Error fetching last readings data:", error.message);
+    res.status(500).json({ error: "Failed to fetch last readings data" });
+  }
+});
+
+
+// פונקציה לעדכון הנתונים ב-lastReadingsData
 async function fetchAndStoreReadings() {
   try {
     // יצירת אובייקט עבור תחילת וסוף היום
@@ -463,7 +479,7 @@ async function fetchAndStoreReadings() {
         console.log('Latest reading is not from today. Fetching from last available day.');
 
         // אם הקריאה האחרונה לא מהיום, נשלוף את הקריאות מהזמן הנוכחי עד 60 דקות אחורה
-        const oneHourAgo = new Date(latestReadingDate.getTime() - 60 * 60 * 1000); // שעה  אחורה
+        const oneHourAgo = new Date(latestReadingDate.getTime() - 60 * 60 * 1000); // שעה אחורה
 
         const readings = await Reading.find({
           date: { $gte: oneHourAgo, $lte: latestReadingDate },
@@ -482,7 +498,7 @@ async function fetchAndStoreReadings() {
 
           console.log(`Fetched ${lastReadingsData.length} readings for the last 1 hour.`);
         } else {
-          console.log("No readings found for the last 1 hours.");
+          console.log("No readings found for the last 1 hour.");
         }
       }
     } else {
@@ -492,8 +508,6 @@ async function fetchAndStoreReadings() {
     console.error("Error fetching readings:", error.message);
   }
 }
-
-
 // נקודת הגישה '/locations'
 app.get("/locations", async (req, res) => {
   try {
