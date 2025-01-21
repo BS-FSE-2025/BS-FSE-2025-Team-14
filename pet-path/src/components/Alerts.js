@@ -6,6 +6,12 @@ const Alerts = () => {
   const [loading, setLoading] = useState(true);
   const [showAllAlerts, setShowAllAlerts] = useState(false); // אם להציג את ההתראות
 
+  const dummyAlerts = [
+    { location: "רחוב חיים נחמן ביאליק, באר שבע", Temperature: 36 },
+    { location: "רחוב אברהם אבינו, באר שבע", Temperature: 40 },
+    { location: "רחוב בן צבי, באר שבע", Temperature: 38 },
+  ];
+  
   useEffect(() => {
     const fetchReadings = async () => {
       try {
@@ -14,12 +20,10 @@ const Alerts = () => {
         checkForAlerts(data);
       } catch (error) {
         console.error("Error fetching readings:", error);
+
+        setLoading(false); // מפסיקים את מצב הטעינה אם יש שגיאה
       }
-      //const dummyAlerts = [
-        //{ location: "רחוב חיים נחמן ביאליק", Temperature: 36},
-       //{ location: "רחוב אברהם אבינו", Temperature: 40},
-      //];
-      //checkForAlerts(dummyAlerts);
+
     };
 
     fetchReadings();
@@ -34,6 +38,16 @@ const Alerts = () => {
 
     setAlerts(alertsWithTime);
     setLoading(false);
+  };
+
+
+  const handleShowDummyAlerts = () => {
+    // מוסיף את התראות הדמה לרשימה
+    const alertsWithTime = dummyAlerts.map((alert) => ({
+      ...alert,
+      time: new Date().toLocaleTimeString(),
+    }));
+    setAlerts(alertsWithTime);
   };
 
   return (
@@ -59,13 +73,20 @@ const Alerts = () => {
             </div>
           ))
         ) : (
-          <p>אין התראות כרגע.</p>
+
+          <div>
+            <p>אין התראות כרגע.</p>
+            <button
+              onClick={handleShowDummyAlerts}
+              className="dummy-alerts-btn"
+            >
+              הצג התראות דמה
+            </button>
+          </div>
         )
       ) : null}
-    
     </div>
-    
   );
 };
 
-export default Alerts;
+export default Alerts;

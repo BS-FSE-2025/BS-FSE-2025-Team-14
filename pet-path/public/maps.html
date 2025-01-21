@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>המסלול הבטוח שלך מתחיל כאן</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 400px;
+      width: 80%;
+      margin: 20px auto;
+    }
+
+    #search-container {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: row-reverse;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #5a3d29;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    #cityName, #streetName {
+      padding: 10px;
+      font-size: 18px;
+      width: 250px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #5a3d29;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3f2a1b;
+    }
+
+   
+  </style>
+</head>
+<body>
+  <h1>המסלול הבטוח שלך מתחיל כאן</h1>
+
+  <div id="search-container">
+    <input type="text" id="cityName" placeholder="הכנס שם עיר" />
+    <input type="text" id="streetName" placeholder="הכנס שם רחוב" />
+    <button onclick="searchLocation()">חפש</button>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    // יצירת מפה
+    const map = L.map('map').setView([32.0853, 34.7818], 13); // מיקום התחלתי בתל אביב
+
+    // הוספת שכבת Tile (לוח המפה)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // פונקציה לחיפוש מיקום
+    function searchLocation() {
+      const city = document.getElementById('cityName').value;
+      const street = document.getElementById('streetName').value;
+
+      if (city && street) {
+        const query = `${street}, ${city}`;
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length > 0) {
+              const lat = data[0].lat;
+              const lon = data[0].lon;
+              map.setView([lat, lon], 13); // מיקום על המפה
+              L.marker([lat, lon]).addTo(map)
+                .bindPopup(`<b>${street}, ${city}</b>`)
+                .openPopup();
+            } else {
+              alert('לא נמצא מיקום עבור החיפוש');
+            }
+          });
+      } else {
+        alert('יש למלא גם את שם העיר וגם את שם הרחוב');
+      }
+    }
+
+    // פונקציה להוספת נתוני החיישן למפה
+    async function loadSensorData() {
+      try {
+        // שליפת הנתונים מה-API שלך
+        const response = await fetch('http://localhost:3001/locations'); // הכתובת לשליפת הנתונים
+        const sensorData = await response.json();
+        console.log('Sensor data:', sensorData); // הדפסת נתוני החיישן בקונסול
+
+        // הוספת נקודות למפה לפי הנתונים של החיישן
+        sensorData.forEach((sensor) => {
+          console.log(sensor);  // הדפסת נתונים של כל חיישן
+          const [lat, lon] = sensor.location.split(','); // המיקום יהיה במבנה "latitude,longitude"
+          
+          // בוחרים את הצבע לפי טמפרטורת החיישן
+          const markerColor = sensor.Temperature > 85 ? 'red' : 'blue';  // שינוי צבע למרקר בולט יותר
+          
+          // יצירת הסימן (מרקר) עם הצבע המתאים
+          L.marker([parseFloat(lat), parseFloat(lon)], {
+            icon: L.divIcon({
+              className: 'leaflet-div-icon',
+              html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+              iconSize: [20, 20] // הגודל של המרקר
+            })
+          }).addTo(map)
+            .bindPopup(`<b>מיקום:</b> ${sensor.location}<br><b>טמפרטורה:</b> ${sensor.Temperature}°C`);
+        });
+      } catch (error) {
+        console.error('Failed to load sensor data:', error);
+      }
+    }
+
+    // קריאה לפונקציה להטענת נתוני החיישן
+    loadSensorData();
+  </script>
+</body>
+</html>

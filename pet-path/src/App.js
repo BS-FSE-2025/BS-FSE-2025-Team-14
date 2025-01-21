@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Route, Routes } from "react-router-dom";
-import Home from "./components/Home";
-import VetDash from "./components/VetDash";
-import DogownerDash from "./components/DogownerDash";
-import DogwalkerDash from "./components/DogwalkerDash";
-import Alerts from "./components/Alerts"; // ייבוא רכיב Alerts
+
+import React, { useState, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import VetDash from './components/VetDash'; 
+import DogownerDash from './components/DogownerDash';
+import DogwalkerDash from './components/DogwalkerDash';
+import Alerts from "./components/Alerts";
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false); // מצב אימות משתמש

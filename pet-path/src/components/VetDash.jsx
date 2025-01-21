@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import { switchLanguage } from './Translate'; 
+import TemperatureAverage from './TemperatureAverages'; // ייבוא רכיב ממוצע טמפרטורות
+
 
 function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
   const [userInfo, setUserInfo] = useState(user || null);
@@ -174,6 +176,11 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
           
         </div>
       )}
+            <div className="divider"></div>
+
+      <div className="temperature-average-section">
+  <TemperatureAverage /> {/* רכיב ממוצע הטמפרטורה */}
+</div>
 
       <div className="divider"></div>
 
