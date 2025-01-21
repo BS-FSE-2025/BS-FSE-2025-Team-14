@@ -401,10 +401,9 @@ async function ensureReadings({ startDate, endDate }) {
 // נקודת הגישה '/locations'
 app.get("/locations", async (req, res) => {
   try {
-    const now = new Date();
-    const twoHoursAgo = new Date(now - 2 * 60 * 60 * 1000); // שעתיים אחורה
-    const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000); // יום אחד אחורה
-
+    const now = new Date(Date.now());
+    const twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000); // שעתיים אחורה
+    const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000); // יום אחד אחורה
     // 1. בדיקה אם יש נתונים מהשעתיים האחרונות
     let readings = await ensureReadings({ startDate: twoHoursAgo, endDate: now });
 
@@ -475,17 +474,24 @@ uploadHistoricalData(historicalStart, historicalEnd);
     //res.status(200).json(readings);
  
 
-// פונקציה לקריאה ידנית
-async function manualCleanup() {
-  console.log('Starting manual cleanup...');
+async function deleteOldReadings() {
   try {
-    await manageDataFetchAndCleanup(); // קריאה לפונקציה לניקוי
-    console.log('Manual cleanup completed successfully!');
+    console.log('Starting manual deletion of old readings...');
+
+    // חישוב תאריך לפני שבועיים
+    const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
+    // מחיקת נתונים ישנים
+    const result = await Reading.deleteMany({ date: { $lt: twoWeeksAgo } });
+
+    console.log(`Deleted ${result.deletedCount} readings older than ${twoWeeksAgo.toISOString()}`);
   } catch (error) {
-    console.error('Error during manual cleanup:', error.message);
+    console.error('Error during manual deletion of old readings:', error.message);
   }
 }
-//manualCleanup(); // הפעלה ידנית
+
+// קריאה לפונקציה (הפעל את השורה הזו באופן ידני כאשר תרצה למחוק נתונים ישנים)
+//deleteOldReadings();
 
 
 // הפעלת השרת רק אם הקובץ נריץ ישירות
