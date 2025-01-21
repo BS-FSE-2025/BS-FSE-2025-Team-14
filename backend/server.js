@@ -369,7 +369,6 @@ async function ensureDailyUpload() {
 
 }
 
-
 async function fetchReadingsForSpecificDates() {
   try {
     const latestToken = await getValidToken(); // קבלת טוקן תקף
@@ -398,7 +397,7 @@ async function fetchReadingsForSpecificDates() {
         },
         limit: {
           page: 1,
-          page_size: 1000, // מקסימום רשומות בבקשה אחת
+          page_size: 600, // מקסימום רשומות בבקשה אחת
         },
       }),
     });
@@ -417,8 +416,26 @@ async function fetchReadingsForSpecificDates() {
           date: new Date(reading.sample_time_utc),
         }));
 
-        console.log(`Saving ${formattedReadings.length} readings to MongoDB.`);
-        await Reading.insertMany(formattedReadings); // שמירה ב-MongoDB
+        console.log(`Processing ${formattedReadings.length} readings to MongoDB.`);
+
+        // מניעת כפילויות לפני שמירה
+        const threshold = 30 * 1000; // טווח של 30 שניות
+        for (const reading of formattedReadings) {
+          const exists = await Reading.findOne({
+            date: { 
+              $gte: new Date(reading.date.getTime() - threshold), 
+              $lte: new Date(reading.date.getTime() + threshold),
+            },
+            location: reading.location, // אימות על פי מיקום ותאריך
+          });
+
+          if (!exists) {
+            console.log(`Saving new reading to MongoDB: ${reading.date}`);
+            await Reading.create(reading); // שמירה ב-MongoDB
+          } else {
+            console.log(`Duplicate reading found: ${reading.date}, skipping.`);
+          }
+        }
       } else {
         console.log("No readings found for the specified dates.");
       }
@@ -429,6 +446,22 @@ async function fetchReadingsForSpecificDates() {
     console.error("Error fetching readings for specific dates:", error.message);
   }
 }
+
+async function cleanupOldReadings(maxCount) {
+  try {
+    const totalCount = await Reading.countDocuments(); // סופרים את כל הרשומות
+    if (totalCount > maxCount) {
+      const excessCount = totalCount - maxCount;
+      const oldReadings = await Reading.find().sort({ date: 1 }).limit(excessCount); // שליפת הרשומות הכי ישנות
+      const oldReadingIds = oldReadings.map((reading) => reading._id);
+      await Reading.deleteMany({ _id: { $in: oldReadingIds } }); // מחיקת הרשומות הישנות
+      console.log(`Deleted ${excessCount} old readings.`);
+    }
+  } catch (error) {
+    console.error("Error cleaning up old readings:", error.message);
+  }
+}
+
 
 
 let lastReadingsData = []; // רשימה שמכילה נתונים על ה30 משיכות האחרונות שיש במונגו בשעה עכשיו בתאריך האחרון שקיים במונגו
@@ -481,6 +514,8 @@ async function fetchAndStoreReadings() {
           });
 
           console.log(`Fetched ${lastReadingsData.length} readings for the last 1 hour.`);
+          await cleanupOldReadings(1000); // הגבלת הנתונים במונגו ל-1000 קריאות בלבד
+
         } else {
           console.log("No readings found for the last 1 hours.");
         }
