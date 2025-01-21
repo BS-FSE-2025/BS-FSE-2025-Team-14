@@ -47,26 +47,11 @@
       background-color: #3f2a1b;
     }
 
-    #logo-container {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
-
-    #logo {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid #5a3d29;
-    }
+   
   </style>
 </head>
 <body>
   <h1>המסלול הבטוח שלך מתחיל כאן</h1>
-  <div id="logo-container">
-    <img src="../../public/media/logo.png.jpg" alt="Logo" id="logo">
-  </div>
 
   <div id="search-container">
     <input type="text" id="cityName" placeholder="הכנס שם עיר" />
@@ -126,7 +111,7 @@
           const [lat, lon] = sensor.location.split(','); // המיקום יהיה במבנה "latitude,longitude"
           
           // בוחרים את הצבע לפי טמפרטורת החיישן
-          const markerColor = sensor.Temperature > 30 ? 'red' : 'blue'; // שינוי צבע למרקר בולט יותר
+          const markerColor = sensor.Temperature > 85 ? 'red' : 'blue';  // שינוי צבע למרקר בולט יותר
           
           // יצירת הסימן (מרקר) עם הצבע המתאים
           L.marker([parseFloat(lat), parseFloat(lon)], {
