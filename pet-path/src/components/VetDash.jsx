@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
+import './Home.jsx'
 import { switchLanguage } from './Translate'; 
 import TemperatureAverage from './TemperatureAverages'; // ייבוא רכיב ממוצע טמפרטורות
+import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
+
 
 
 function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
@@ -22,6 +25,7 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
 
   // ה-state החדש להצגת חלונית ההגדרות
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const navigate = useNavigate(); // שימוש בפונקציה לנווט בין דפים
 
   useEffect(() => {
     if (!userInfo) {
@@ -125,6 +129,12 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
     setIsSettingsOpen((prev) => !prev);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // מחיקת המידע של המשתמש מה-localStorage
+    setUserInfo(null); // איפוס המידע על המשתמש ב-state המקומי
+    navigate('/'); // ניווט לדף הבית
+  };
+
   return (
     <div>
       <header>
@@ -147,6 +157,7 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
             <li><a href="#" onClick={toggleSettings}>הגדרות המערכת</a></li> {/* כפתור הגדרות */}
             <li><a href="#reviews">כותבים עלינו</a></li>
             <li><a href="#publish">עסקים מומלצים</a></li>
+            <li><button onClick={handleLogout} className="logout-button">התנתק</button></li> {/* כפתור התנתקות */}
           </ul>
         </nav>
       </header>
