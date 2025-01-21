@@ -142,7 +142,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
           <nav>
             <ul>
               <li><a href="#" onClick={(e) => { e.preventDefault(); setShowProfile(!showProfile); }}>פרופיל</a></li>
-              <li><a href="#" onClick={toggleSettings}>הגדרות המערכת</a></li> {/* כפתור הגדרות */}
+              <li><a href="#" onClick={toggleSettings}>הגדרות  המערכת</a></li> {/* כפתור הגדרות */}
               <li><a href="#reviews">כותבים עלינו</a></li>
               <li><a href="#publish">עסקים מומלצים</a></li>
             </ul>
