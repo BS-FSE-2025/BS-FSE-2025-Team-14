@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./Alerts.css";
+import "./Alerts.css"; 
 
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
@@ -11,7 +11,7 @@ const Alerts = () => {
     { location: "רחוב אברהם אבינו, באר שבע", Temperature: 40 },
     { location: "רחוב בן צבי, באר שבע", Temperature: 38 },
   ];
-
+  
   useEffect(() => {
     const fetchReadings = async () => {
       try {
@@ -20,8 +20,10 @@ const Alerts = () => {
         checkForAlerts(data);
       } catch (error) {
         console.error("Error fetching readings:", error);
+
         setLoading(false); // מפסיקים את מצב הטעינה אם יש שגיאה
       }
+
     };
 
     fetchReadings();
@@ -37,6 +39,7 @@ const Alerts = () => {
     setAlerts(alertsWithTime);
     setLoading(false);
   };
+
 
   const handleShowDummyAlerts = () => {
     // מוסיף את התראות הדמה לרשימה
@@ -70,6 +73,7 @@ const Alerts = () => {
             </div>
           ))
         ) : (
+
           <div>
             <p>אין התראות כרגע.</p>
             <button
