@@ -542,3 +542,19 @@ footer {
 #language-switcher:hover {
     background-color: #7a6a4d; /* שינוי צבע הרקע בהעברה לגוון כהה יותר */
 }
+
+nav ul li .logout-button {
+    background-color: #4a3627; /* צבע רקע */
+    color: white; /* צבע טקסט */
+    padding: 10px 20px; /* ריווח פנימי */
+    border: none; /* ללא גבול */
+    border-radius: 5px; /* פינות מעוגלות */
+    font-size: 1.1rem; /* גודל טקסט */
+    font-weight: bold; /* טקסט מודגש */
+    cursor: pointer; /* סמן יד */
+    transition: background-color 0.3s ease; /* אפקט מעבר בצבע */
+}
+
+nav ul li .logout-button:hover {
+    background-color: #7a5a45; /* צבע רקע כהה יותר בריחוף */
+}
