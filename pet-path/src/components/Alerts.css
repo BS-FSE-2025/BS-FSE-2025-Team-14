@@ -1,0 +1,78 @@
+/* מיכל כללי להתראות */
+.alerts-container {
+  position: fixed; /* נע להדביק את ההתראות במסך */
+  bottom: 20px; /* למטה בצד של המסך */
+  left: 20px; /* מהצד השמאלי */
+  width: 280px; /* רוחב מותאם יותר, קטנתי את הרוחב */
+  background-color: #f1e6d7; /* צבע רקע בהיר בגוון חום בהיר */
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  transition: transform 0.3s ease-in-out;
+}
+
+.alerts-btn {
+  background-color: #8b6e4f; /* צבע חום כהה לכפתור */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.alerts-btn:hover {
+  background-color: #6e4d34; /* צבע חום כהה יותר בהובר */
+}
+
+.error-message {
+  color: #e74c3c;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.alert-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background-color: #fff9f2; /* צבע רקע בהיר מאוד ורגוע */
+  border-left: 5px solid #8b6e4f; /* גבול חום כהה */
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-item p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #4d3b2f; /* צבע חום כהה לטקסט */
+}
+
+.alert-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: #8b6e4f; /* חום כהה להתראת זמן */
+  margin-bottom: 8px;
+}
+
+.alert-item .alert-header p {
+  font-size: 12px;
+  color: #7a5d4a; /* צבע חום בינוני לתאריך */
+}
+
+.alert-item strong {
+  color: #8b6e4f; /* צבע חום כהה לקטע הדגש */
+}
+
+/* אנימציה להופעה ולסתרה של ההתראות */
+.show-alerts {
+  transform: translateX(0);
+}
+
+.hide-alerts {
+  transform: translateX(100%);
+}
+
