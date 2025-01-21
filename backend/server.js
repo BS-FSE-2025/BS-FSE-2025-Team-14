@@ -224,6 +224,7 @@ async function refreshToken(refreshToken) {
   const payload = {
     refresh_token: refreshToken,
   };
+
   try {
     const response = await fetch(url, {
       method: "POST",
@@ -231,6 +232,14 @@ async function refreshToken(refreshToken) {
       body: JSON.stringify(payload),
     });
 
+    if (!response.ok) { // שורה חדשה
+      throw new Error(`Failed to fetch new token using refresh token: ${response.status}`); // שורה חדשה
+    }
+
+    const data = await response.json();
+    const token = data?.data?.token;
+    const newRefreshToken = data?.data?.refresh_token;
+    const expiresIn = data?.data?.expires_in;
 
     if (token && newRefreshToken) {
       console.log("Token successfully refreshed!");
@@ -261,7 +270,6 @@ async function refreshToken(refreshToken) {
   }
 }
 
-
 async function manageDataFetchAndCleanup() {
   try {
     console.log("Starting data fetch and cleanup...");
@@ -288,13 +296,11 @@ async function manageDataFetchAndCleanup() {
   }
 }
 
-
 function setupTasks() {
   manageDataFetchAndCleanup(); // הפעלה מיידית
   setInterval(manageDataFetchAndCleanup, 48 * 60 * 60 * 1000); // הפעלה כל 48 שעות
 }
 setupTasks();
-
 
 
 //let lastReadingsData = []; // רשימה שמכילה נתונים על ה30 משיכות האחרונות שיש במונגו בשעה עכשיו בתאריך האחרון שקיים במונגו
@@ -364,8 +370,15 @@ async function fetchAndProcessReadings({ startDate, endDate }) {
     console.error("Error in fetchAndProcessReadings:", error.message);
   }
 }
-let lastReadingsData = []; // רשימה שמכילה נתונים על ה30 משיכות האחרונות שיש במונגו בשעה עכשיו בתאריך האחרון שקיים במונגו
 
+async function getReadingsFromDatabase({ startDate, endDate }) {
+  try {
+    return await Reading.find({ date: { $gte: startDate, $lte: endDate } }).sort({ date: -1 });
+  } catch (error) {
+    console.error("Error fetching readings from database:", error.message);
+    throw error;
+  }
+}
 
 async function ensureReadings({ startDate, endDate }) {
   try {
@@ -374,6 +387,16 @@ async function ensureReadings({ startDate, endDate }) {
     // אם אין נתונים מספקים, נמשוך מה-API
     if (readings.length === 0 || readings[0].date < new Date(Date.now() - 10 * 60 * 1000)) {
       console.log("Fetching readings from sensors API...");
+      await fetchAndProcessReadings({ startDate, endDate });
+    }
+
+    // שליפה מחדש לאחר עדכון אפשרי
+    return await getReadingsFromDatabase({ startDate, endDate });
+  } catch (error) {
+    console.error("Error ensuring readings:", error.message);
+    throw error;
+  }
+}
 
 // נקודת הגישה '/locations'
 app.get("/locations", async (req, res) => {
@@ -397,14 +420,53 @@ app.get("/locations", async (req, res) => {
       readings = await Reading.find().sort({ date: -1 }).limit(30);
     }
 
+    // עיבוד הנתונים לפורמט הנדרש
+    const processedReadings = readings.map((reading) => {
+      const [lat, lng] = reading.location.split(','); // פיצול המיקום למספרים
+      return {
+        temperature: reading.Temperature,
+        location: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        date: reading.date,
+      };
+    });
 
+    // שמירה על מקסימום של 30 קריאות
+    const finalReadings = processedReadings.slice(0, 30);
+
+    res.status(200).json(finalReadings);
   } catch (error) {
     console.error("Failed to fetch locations:", error.message);
     res.status(500).json({ error: "Failed to fetch locations." });
   }
 });
 
+async function uploadHistoricalData(startDate, endDate) {
+  try {
+    console.log(`Starting historical data upload from ${startDate.toISOString()} to ${endDate.toISOString()}`);
 
+    let currentStart = new Date(startDate);
+    while (currentStart < endDate) {
+      const currentEnd = new Date(Math.min(currentStart.getTime() + 48 * 60 * 60 * 1000, endDate.getTime())); // חישוב סיום הטווח הנוכחי (עד 48 שעות)
+
+      console.log(`Fetching readings from ${currentStart.toISOString()} to ${currentEnd.toISOString()}`);
+      
+      await fetchAndProcessReadings({ startDate: currentStart, endDate: currentEnd }); // קריאה לפונקציה קיימת שמעלה נתונים
+      
+      currentStart = new Date(currentEnd); // מעבר לטווח הבא
+    }
+
+    console.log("Historical data upload completed!");
+  } catch (error) {
+    console.error("Error during historical data upload:", error.message);
+  }
+}
+/*
+const historicalStart = new Date("2025-01-07T00:00:00Z");
+const historicalEnd = new Date("2025-01-15T00:00:00Z");
+
+// הפעלה ידנית של הפונקציה להעלאת נתונים היסטוריים
+uploadHistoricalData(historicalStart, historicalEnd);
+*/
 
     // filter readings for map locations
    // let locations = [];
@@ -426,7 +488,6 @@ async function manualCleanup() {
 //manualCleanup(); // הפעלה ידנית
 
 
-
 // הפעלת השרת רק אם הקובץ נריץ ישירות
 if (require.main === module) {
   const PORT = process.env.PORT || 3001;
@@ -438,6 +499,7 @@ if (require.main === module) {
 module.exports = app;  // ייצוא של האפליקציה לבדיקות
 
 
+////////////////
+////////////////
 
-////////////////
-////////////////
+
