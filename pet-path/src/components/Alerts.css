@@ -1,4 +1,4 @@
-/* מיכל כללי להתראות */
+//style for alart/
 .alerts-container {
   position: fixed; /* נע להדביק את ההתראות במסך */
   bottom: 20px; /* למטה בצד של המסך */
@@ -75,4 +75,3 @@
 .hide-alerts {
   transform: translateX(100%);
 }
-

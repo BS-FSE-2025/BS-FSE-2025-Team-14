@@ -1,0 +1,45 @@
+.temperature-average-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background-color: #f8f4e6; /* צבע רקע חמים */
+    border-radius: 10px; /* עיגול קל לפינות */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* הצללה עדינה */
+    max-width: 600px; /* הגבלת רוחב */
+    margin: 50px auto; /* רווח מהקצוות */
+  }
+  
+  .calculate-btn {
+    padding: 12px 25px;
+    background-color: #6a4f3b; /* חום בהיר */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .calculate-btn:hover {
+    background-color: #8b5e3c; /* חום כהה יותר עבור hover */
+  }
+  
+  .calculate-btn:active {
+    background-color: #9e7e5a; /* חום כהה עוד יותר כאשר הכפתור נלחץ */
+  }
+  
+  .average-display {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #6a4f3b; /* חום בהיר */
+    font-weight: bold;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 16px;
+  }
+  
