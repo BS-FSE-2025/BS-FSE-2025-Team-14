@@ -8,8 +8,8 @@ import Alerts from "./components/Alerts";
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // State for checking if user is logged in
-  const [user, setUser] = useState(null); // To store user info after login/register
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // מצב אימות משתמש
+  const [user, setUser] = useState(null); // לאחסון פרטי המשתמש לאחר התחברות/הרשמה
 
   return (
     <>
