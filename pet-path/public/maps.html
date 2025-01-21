@@ -102,34 +102,37 @@
     
     // פונקציה להוספת נתוני החיישן למפה
     async function loadSensorData() {
-      try {
-        // שליפת הנתונים מה-API שלך
-        const response = await fetch('http://localhost:3001/locations'); // הכתובת לשליפת הנתונים
-        const sensorData = await response.json();
-        console.log('Sensor data:', sensorData); // הדפסת נתוני החיישן בקונסול
+  try {
+    // שליפת הנתונים מה-API שלך
+    const response = await fetch('http://localhost:3001/locations'); // הכתובת לשליפת הנתונים
+    const sensorData = await response.json();
+    console.log('Sensor data:', sensorData); // הדפסת נתוני החיישן בקונסול
 
-        // הוספת נקודות למפה לפי הנתונים של החיישן
-        sensorData.forEach((sensor) => {
-          console.log(sensor);  // הדפסת נתונים של כל חיישן
-          const [lat, lon] = sensor.location.split(','); // המיקום יהיה במבנה "latitude,longitude"
-          
-          // בוחרים את הצבע לפי טמפרטורת החיישן
-          const markerColor = sensor.Temperature > 85 ? 'red' : 'blue';  // שינוי צבע למרקר בולט יותר
-          
-          // יצירת הסימן (מרקר) עם הצבע המתאים
-          L.marker([parseFloat(lat), parseFloat(lon)], {
-            icon: L.divIcon({
-              className: 'leaflet-div-icon',
-              html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
-              iconSize: [20, 20] // הגודל של המרקר
-            })
-          }).addTo(map)
-            .bindPopup(`<b>מיקום:</b> ${sensor.location}<br><b>טמפרטורה:</b> ${sensor.Temperature}°C`);
-        });
-      } catch (error) {
-        console.error('Failed to load sensor data:', error);
-      }
-    }
+    // הוספת נקודות למפה לפי הנתונים של החיישן
+    sensorData.forEach((sensor) => {
+      // שליפת הנתונים למיקום וטמפרטורה
+      const lat = sensor.location.lat;
+      const lng = sensor.location.lng;
+      const temperature = sensor.temperature;
+
+      // בוחרים את הצבע לפי טמפרטורת החיישן
+      const markerColor = temperature > 30 ? 'red' : 'blue'; // שינוי צבע לפי טמפרטורה
+
+      // יצירת המרקר עם הצבע המתאים
+      L.marker([lat, lng], {
+        icon: L.divIcon({
+          className: 'leaflet-div-icon',
+          html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+          iconSize: [20, 20] // גודל המרקר
+        })
+      }).addTo(map)
+        .bindPopup(`<b>מיקום:</b> (${lat}, ${lng})<br><b>טמפרטורה:</b> ${temperature}°C`);
+    });
+  } catch (error) {
+    console.error('Failed to load sensor data:', error);
+  }
+}
+
 
     // קריאה לפונקציה להטענת נתוני החיישן
     loadSensorData();
