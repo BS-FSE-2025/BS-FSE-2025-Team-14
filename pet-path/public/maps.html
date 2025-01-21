@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>המסלול הבטוח שלך מתחיל כאן</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script type="module" src="/BS-FSE-2025-Team-14/pet-path/src/components/readingsService.js"></script>
   <style>
     #map {
       height: 400px;
@@ -71,8 +72,6 @@
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-
-    
     // פונקציה לחיפוש מיקום
     function searchLocation() {
       const city = document.getElementById('cityName').value;
@@ -99,37 +98,78 @@
       }
     }
 
-    
     // פונקציה להוספת נתוני החיישן למפה
-    async function loadSensorData() {
-      try {
-        // שליפת הנתונים מה-API שלך
-        const response = await fetch('http://localhost:3001/locations'); // הכתובת לשליפת הנתונים
-        const sensorData = await response.json();
-        console.log('Sensor data:', sensorData); // הדפסת נתוני החיישן בקונסול
+    // פונקציה להוספת נתוני החיישן למפה
 
-        // הוספת נקודות למפה לפי הנתונים של החיישן
-        sensorData.forEach((sensor) => {
-          console.log(sensor);  // הדפסת נתונים של כל חיישן
-          const [lat, lon] = sensor.location.split(','); // המיקום יהיה במבנה "latitude,longitude"
-          
-          // בוחרים את הצבע לפי טמפרטורת החיישן
-          const markerColor = sensor.Temperature > 85 ? 'red' : 'blue';  // שינוי צבע למרקר בולט יותר
-          
-          // יצירת הסימן (מרקר) עם הצבע המתאים
-          L.marker([parseFloat(lat), parseFloat(lon)], {
-            icon: L.divIcon({
-              className: 'leaflet-div-icon',
-              html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
-              iconSize: [20, 20] // הגודל של המרקר
-            })
-          }).addTo(map)
-            .bindPopup(`<b>מיקום:</b> ${sensor.location}<br><b>טמפרטורה:</b> ${sensor.Temperature}°C`);
-        });
-      } catch (error) {
-        console.error('Failed to load sensor data:', error);
-      }
+
+
+
+    async function loadSensorData() {
+  try {
+    // הדפסת הודעה כדי לוודא שהפונקציה מתחילה לפעול
+    console.log('Loading sensor data...');
+
+    // קריאה לפונקציה fetchLast30Readings כדי לוודא שהנתונים התקבלו
+    await fetchLast30Readings(); // ודא שהנתונים הגיעו
+    const sensorData = getLast30Readings(); // קבלת נתוני החיישן
+    console.log("Fetched Sensor Data:", sensorData); // הדפסת נתוני החיישן שקיבלת
+
+    // אם אין נתונים, הצגת הודעה מתאימה
+    if (sensorData.length === 0) {
+      console.log('No sensor data available');
+      return;
     }
+
+    // ניקוי כל השכבות הישנות (מרקרים קודמים) לפני הוספת החדשים
+    map.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+
+    // הוספת נקודות חיישן למפה
+    sensorData.forEach((sensor, index) => {
+      const lat = sensor.location.lat;
+      const lon = sensor.location.lng;
+
+      // הדפסת כל חיישן כדי לוודא שאתה מקבל את המידע על כל אחד מהם
+      console.log(`Sensor #${index + 1}:`, sensor);
+
+      // בדיקת תקינות הקואורדינטות
+      if (isNaN(lat) || isNaN(lon)) {
+        console.log('Invalid coordinates:', sensor.location);
+        return; // אם הקואורדינטות לא תקינות, נפסיק את ההוספה
+      }
+
+      // קביעת צבע המרקר על פי הטמפרטורה
+      const markerColor = sensor.temperature > 85 ? 'red' : 'blue';
+
+      // יצירת המרקר והוספתו למפה
+      L.marker([lat, lon], {
+        icon: L.divIcon({
+          className: 'leaflet-div-icon',
+          html: `<div style="background-color: ${markerColor}; width: 20px; height: 20px; border-radius: 50%; border: 2px solid black;"></div>`,
+          iconSize: [20, 20], // הגודל של המרקר
+        }),
+      })
+        .addTo(map)
+        .bindPopup(`<b>מיקום:</b> ${lat}, ${lon}<br><b>טמפרטורה:</b> ${sensor.temperature}°C`);
+
+      // הדפסת הודעה כדי לוודא שהמרקר נוסף בהצלחה
+      console.log(`Marker added at: [${lat}, ${lon}] with color ${markerColor}`);
+    });
+
+    // לאחר הוספת המרקרים, להתאים את המפה כך שתכסה את כל הנקודות
+    map.fitBounds(map.getBounds());
+
+  } catch (error) {
+    // אם יש שגיאה, להדפיס אותה בקונסול
+    console.error('Failed to load sensor data:', error);
+  }
+}
+
+
+
 
     // קריאה לפונקציה להטענת נתוני החיישן
     loadSensorData();
