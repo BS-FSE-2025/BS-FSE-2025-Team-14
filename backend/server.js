@@ -187,14 +187,20 @@ async function getSensorApiToken() {
   }
 }
 
-// פונקציה לשליפת הטוקן האחרון ממסד הנתונים או יצירת חדש אם צריך
+// פונקציה לשליפת טוקן תקף
 async function getValidToken() {
   let latestToken = await Token.findOne().sort({ date: -1 });
 
   // אם אין טוקן או שהטוקן פג תוקף
   if (!latestToken || Date.now() >= latestToken.expires) {
-    console.log("Token missing or expired. Fetching a new token...");
-    latestToken = await getSensorApiToken();
+    console.log("Token missing or expired. Refreshing token...");
+
+    // אם יש Refresh Token, ננסה לרענן את הטוקן
+    if (latestToken?.refreshtoken) {
+      latestToken = await refreshToken(latestToken.refreshtoken); // קריאה לפונקציה לרענון הטוקן
+    } else {
+      throw new Error("No refresh token available to refresh the token.");
+    }
   }
 
   if (!latestToken) {
@@ -203,26 +209,116 @@ async function getValidToken() {
 
   return latestToken;
 }
-async function fetchReadingsForSpecificDates() {
+
+// פונקציה לרענון טוקן באמצעות ה-refresh token
+async function refreshToken(refreshToken) {
+  const url = `${apiUrl}/auth/refresh_token`;
+
+  const headers = {
+    "accept": "application/json",
+    "app_version": "petpath-1.0.0",
+    "access_type": 5,
+    "Content-Type": "application/json",
+  };
+
+  const payload = {
+    refresh_token: refreshToken,
+  };
+
   try {
-    const latestToken = await getValidToken(); // קבלת טוקן תקף
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(payload),
+    });
 
-    const now = new Date(); // תאריך נוכחי
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
+    if (!response.ok) { // שורה חדשה
+      throw new Error(`Failed to fetch new token using refresh token: ${response.status}`); // שורה חדשה
+    }
 
-    // חישוב התאריכים: 21 עד 23
-    const startDate = new Date(currentYear, currentMonth, 21, 0, 0, 0); // 21 לחודש, תחילת היום
-    const endDate = new Date(currentYear, currentMonth, 23, 23, 59, 59); // 23 לחודש, סוף היום
+    const data = await response.json();
+    const token = data?.data?.token;
+    const newRefreshToken = data?.data?.refresh_token;
+    const expiresIn = data?.data?.expires_in;
 
+    if (token && newRefreshToken) {
+      console.log("Token successfully refreshed!");
+
+      // שמירת הטוקן החדש במסד הנתונים
+      const newToken = new Token({
+        token: token,
+        refreshtoken: newRefreshToken,
+        expires: Date.now() + expiresIn * 1000, // זמן פקיעה בפורמט milliseconds
+        date: new Date(),
+      });
+      await newToken.save();
+
+      return newToken; // החזרת הטוקן החדש
+    } else {
+      throw new Error("Token or refresh token not found in response.");
+    }
+  } catch (error) { // שורות אלו שונו
+    console.error(`Error refreshing token: ${error.message}`); // שורה חדשה
+    console.log("Attempting to fetch a new token..."); // שורה חדשה
+
+    // אם רענון הטוקן נכשל, ננסה לקבל טוקן חדש כמו בפעם הראשונה
+    const newToken = await getSensorApiToken(); // שורה חדשה
+    if (!newToken) { // שורה חדשה
+      throw new Error("Failed to fetch a new token after refresh token failure."); // שורה חדשה
+    }
+    return newToken; // שורה חדשה
+  }
+}
+
+
+async function manageDataFetchAndCleanup() {
+  try {
+    console.log("Starting data fetch and cleanup...");
+
+    // משיכת נתונים ליומיים האחרונים
+    const startDate = new Date(Date.now() - 48 * 60 * 60 * 1000); // יומיים אחורה
+    const endDate = new Date();
+    await fetchReadings({ startDate, endDate });
+
+    // מחיקת נתונים ישנים עד ה-7 בינואר 2025
+    const january7 = new Date("2025-01-07T00:00:00Z");
+    const result = await Reading.deleteMany({ date: { $lt: january7 } });
+    console.log(`Deleted ${result.deletedCount} old readings created before January 7, 2025.`);
+
+    // הערה: ניתן להחליף את המחיקה הקבועה למחיקה על בסיס שבוע וחצי אחרונים:
+    /*
+    const retentionDate = new Date(Date.now() - 10.5 * 24 * 60 * 60 * 1000); // שבוע וחצי אחורה
+    const retentionResult = await Reading.deleteMany({ date: { $lt: retentionDate } });
+    console.log(`Deleted ${retentionResult.deletedCount} old readings created before ${retentionDate.toISOString()}.`);
+    */
+   
+  } catch (error) {
+    console.error("Error in manageDataFetchAndCleanup:", error.message);
+  }
+}
+
+
+function setupTasks() {
+  manageDataFetchAndCleanup(); // הפעלה מיידית
+  setInterval(manageDataFetchAndCleanup, 48 * 60 * 60 * 1000); // הפעלה כל 48 שעות
+}
+setupTasks();
+
+
+
+//let lastReadingsData = []; // רשימה שמכילה נתונים על ה30 משיכות האחרונות שיש במונגו בשעה עכשיו בתאריך האחרון שקיים במונגו
+
+async function fetchAndProcessReadings({ startDate, endDate }) {
+  try {
+    const latestToken = await getValidToken();
     console.log(`Fetching readings from ${startDate.toISOString()} to ${endDate.toISOString()}`);
 
     const response = await fetch(`${apiUrl}/sensors_readings`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${latestToken.token}`,
+        Authorization: `Bearer ${latestToken.token}`,
         "Content-Type": "application/json",
-        "accept": "application/json",
+        accept: "application/json",
       },
       body: JSON.stringify({
         filters: {
@@ -233,15 +329,15 @@ async function fetchReadingsForSpecificDates() {
         },
         limit: {
           page: 1,
-          page_size: 1000, // מקסימום רשומות בבקשה אחת
+          page_size: 600,
         },
       }),
     });
 
     const info = await response.json();
-
     if (info?.code === 200) {
-      const readingsData = info.data.readings_data;
+      const readingsData = info.data.readings_data || [];
+      console.log(`Processing ${readingsData.length} readings...`);
 
       if (readingsData.length > 0) {
         const formattedReadings = readingsData.map((reading) => ({
@@ -252,109 +348,130 @@ async function fetchReadingsForSpecificDates() {
           date: new Date(reading.sample_time_utc),
         }));
 
-        console.log(`Saving ${formattedReadings.length} readings to MongoDB.`);
-        await Reading.insertMany(formattedReadings); // שמירה ב-MongoDB
-      } else {
-        console.log("No readings found for the specified dates.");
+        const threshold = 30 * 1000; // טווח זמן לבדיקה כפילויות
+        for (const reading of formattedReadings) {
+          const exists = await Reading.findOne({
+            date: {
+              $gte: new Date(reading.date.getTime() - threshold),
+              $lte: new Date(reading.date.getTime() + threshold),
+            },
+            location: reading.location,
+          });
+
+          if (!exists) {
+            await Reading.create(reading);
+            console.log(`Saved reading from ${reading.date}`);
+          } else {
+            console.log(`Duplicate reading found for ${reading.date}`);
+          }
+        }
       }
     } else {
       console.error("Failed to fetch readings:", info);
     }
   } catch (error) {
-    console.error("Error fetching readings for specific dates:", error.message);
+    console.error("Error in fetchAndProcessReadings:", error.message);
   }
 }
+
+async function getReadingsFromDatabase({ startDate, endDate }) {
+  try {
+    return await Reading.find({ date: { $gte: startDate, $lte: endDate } }).sort({ date: -1 });
+  } catch (error) {
+    console.error("Error fetching readings from database:", error.message);
+    throw error;
+  }
+}
+
+async function ensureReadings({ startDate, endDate }) {
+  try {
+    const readings = await getReadingsFromDatabase({ startDate, endDate });
+
+    // אם אין נתונים מספקים, נמשוך מה-API
+    if (readings.length === 0 || readings[0].date < new Date(Date.now() - 10 * 60 * 1000)) {
+      console.log("Fetching readings from sensors API...");
+      await fetchAndProcessReadings({ startDate, endDate });
+    }
+
+    // שליפה מחדש לאחר עדכון אפשרי
+    return await getReadingsFromDatabase({ startDate, endDate });
+  } catch (error) {
+    console.error("Error ensuring readings:", error.message);
+    throw error;
+  }
+}
+
 
 // נקודת הגישה '/locations'
 app.get("/locations", async (req, res) => {
   try {
-    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000); // טווח הזמן: שעתיים אחורה
-    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);  // בדיקה עבור עשר הדקות האחרונות
+    const now = new Date();
+    const twoHoursAgo = new Date(now - 2 * 60 * 60 * 1000); // שעתיים אחורה
+    const oneDayAgo = new Date(now - 24 * 60 * 60 * 1000); // יום אחד אחורה
 
-    // שליפת הטוקן התקף
-    const latestToken = await getValidToken();
+    // 1. בדיקה אם יש נתונים מהשעתיים האחרונות
+    let readings = await ensureReadings({ startDate: twoHoursAgo, endDate: now });
 
-    // שליפת הקריאות ממסד הנתונים
-    let readings = await Reading.find({ date: { $gte: twoHoursAgo } }).sort({ date: -1 });
-
-    let repeat = 5;
-    while (repeat > 0 && (readings.length === 0 || readings[0].date > tenMinutesAgo)) {
-      console.log(`Got ${readings.length} readings from MongoDB.`);
-
-      const latestReadingDate = readings.length ? readings[0].date : twoHoursAgo;
-
-      console.log("Fetching readings from sensors API...");
-      const currentDate = new Date();
-      const apiResponse = await fetch(`${apiUrl}/sensors_readings`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${latestToken.token}`,
-          "Content-Type": "application/json",
-          "accept": "application/json",
-        },
-        body: JSON.stringify({
-          filters: {
-            start_date: latestReadingDate.toISOString(),
-            end_date: currentDate.toISOString(),
-            mac: [deviceMAC],
-            createdAt: true,
-          },
-          limit: {
-            page: 1,
-            page_size: 100,
-          },
-        }),
-      });
-
-      const info = await apiResponse.json();
-
-      if (info?.code === 200) {
-        const newReadings = info.data.readings_data.map((reading) => ({
-          device_name: reading.device_name,
-          location: `${reading.location.lat},${reading.location.lng}`,
-          Temperature: reading.Temperature,
-          mac: reading.mac,
-          date: new Date(reading.sample_time_utc),
-        }));
-
-        // בדיקת קריאות שכבר קיימות במסד הנתונים
-        const existingDates = await Reading.find({
-          date: { $gte: latestReadingDate, $lte: currentDate },
-          mac: deviceMAC,
-        }).select("date -_id");
-
-        const existingDatesSet = new Set(existingDates.map((entry) => entry.date.toISOString()));
-
-        const uniqueReadings = newReadings.filter(
-          (reading) => !existingDatesSet.has(reading.date.toISOString())
-        );
-
-        if (uniqueReadings.length > 0) {
-          console.log(`Saving ${uniqueReadings.length} new readings to MongoDB.`);
-          await Reading.insertMany(uniqueReadings); // שמירה ב-MongoDB
-          readings = [...uniqueReadings, ...readings];
-        } else {
-          console.log("No new readings to save.");
-        }
-
-        repeat -= 1;
-      } else if (info?.code === 401) {
-        console.log("Refreshing token...");
-        const refreshedToken = await getSensorApiToken();
-        if (!refreshedToken) {
-          throw new Error("Failed to refresh token.");
-        }
-      } else {
-        throw new Error("Failed to fetch readings from sensors API.");
-      }
+    if (readings.length === 0) {
+      console.log("No readings found in the last two hours. Checking last day...");
+      // 2. בדיקה אם יש נתונים מהיום האחרון
+      readings = await ensureReadings({ startDate: oneDayAgo, endDate: now });
     }
 
-    res.status(200).json(readings);
+    if (readings.length === 0) {
+      console.log("No readings found in the last day. Fetching last available readings...");
+      // 3. משיכת 30 הקריאות האחרונות שנמצאות במונגו
+      readings = await Reading.find().sort({ date: -1 }).limit(30);
+    }
+
+    // עיבוד הנתונים לפורמט הנדרש
+    const processedReadings = readings.map((reading) => {
+      const [lat, lng] = reading.location.split(','); // פיצול המיקום למספרים
+      return {
+        temperature: reading.Temperature,
+        location: { lat: parseFloat(lat), lng: parseFloat(lng) },
+        date: reading.date,
+      };
+    });
+
+    // שמירה על מקסימום של 30 קריאות
+    const finalReadings = processedReadings.slice(0, 30);
+
+    res.status(200).json(finalReadings);
   } catch (error) {
     console.error("Failed to fetch locations:", error.message);
     res.status(500).json({ error: "Failed to fetch locations." });
   }
 });
+
+async function uploadHistoricalData(startDate, endDate) {
+  try {
+    console.log(`Starting historical data upload from ${startDate.toISOString()} to ${endDate.toISOString()}`);
+
+    let currentStart = new Date(startDate);
+    while (currentStart < endDate) {
+      const currentEnd = new Date(Math.min(currentStart.getTime() + 48 * 60 * 60 * 1000, endDate.getTime())); // חישוב סיום הטווח הנוכחי (עד 48 שעות)
+
+      console.log(`Fetching readings from ${currentStart.toISOString()} to ${currentEnd.toISOString()}`);
+      
+      await fetchAndProcessReadings({ startDate: currentStart, endDate: currentEnd }); // קריאה לפונקציה קיימת שמעלה נתונים
+      
+      currentStart = new Date(currentEnd); // מעבר לטווח הבא
+    }
+
+    console.log("Historical data upload completed!");
+  } catch (error) {
+    console.error("Error during historical data upload:", error.message);
+  }
+}
+/*
+const historicalStart = new Date("2025-01-07T00:00:00Z");
+const historicalEnd = new Date("2025-01-15T00:00:00Z");
+
+// הפעלה ידנית של הפונקציה להעלאת נתונים היסטוריים
+uploadHistoricalData(historicalStart, historicalEnd);
+*/
+
 
     // filter readings for map locations
    // let locations = [];
@@ -363,7 +480,17 @@ app.get("/locations", async (req, res) => {
     //res.status(200).json(readings);
  
 
-
+// פונקציה לקריאה ידנית
+async function manualCleanup() {
+  console.log('Starting manual cleanup...');
+  try {
+    await manageDataFetchAndCleanup(); // קריאה לפונקציה לניקוי
+    console.log('Manual cleanup completed successfully!');
+  } catch (error) {
+    console.error('Error during manual cleanup:', error.message);
+  }
+}
+//manualCleanup(); // הפעלה ידנית
 
 
 
@@ -377,3 +504,7 @@ if (require.main === module) {
 
 module.exports = app;  // ייצוא של האפליקציה לבדיקות
 
+
+
+////////////////
+////////////////
