@@ -4,63 +4,83 @@ import "./Alerts.css";
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [showAllAlerts, setShowAllAlerts] = useState(false);
+  const [showAllAlerts, setShowAllAlerts] = useState(false); // אם להציג את ההתראות
+
+  const dummyAlerts = [
+    { location: "רחוב חיים נחמן ביאליק, באר שבע", Temperature: 36 },
+    { location: "רחוב אברהם אבינו, באר שבע", Temperature: 40 },
+    { location: "רחוב בן צבי, באר שבע", Temperature: 38 },
+  ];
 
   useEffect(() => {
-    // קריאה ל-API כדי למשוך את הנתונים
-    const fetchAlerts = async () => {
+    const fetchReadings = async () => {
       try {
-        const response = await fetch("http://localhost:3001/lastReadingsData");
-    
-        // אם התגובה לא תקינה (status 200), להוציא שגיאה
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-    
-        const data = await response.json(); // המרת הנתונים מה-JSON
-        setAlerts(data); // עדכון מצב התראות
-        setLoading(false); // שינוי מצב טעינה
+        const response = await fetch("http://localhost:3001/locations");
+        const data = await response.json();
+        checkForAlerts(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
-        setError("לא הצלחנו לטעון את הנתונים. נסה שוב מאוחר יותר.");
-        setLoading(false); // שינוי מצב טעינה
+        console.error("Error fetching readings:", error);
+        setLoading(false); // מפסיקים את מצב הטעינה אם יש שגיאה
       }
     };
-  
-    fetchAlerts(); // קריאה ל-API פעם אחת
+
+    fetchReadings();
   }, []);
+
+  const checkForAlerts = (data) => {
+    const highTempAlerts = data.filter((reading) => reading.Temperature > 30);
+    const alertsWithTime = highTempAlerts.map((alert) => ({
+      ...alert,
+      time: new Date().toLocaleTimeString(),
+    }));
+
+    setAlerts(alertsWithTime);
+    setLoading(false);
+  };
+
+  const handleShowDummyAlerts = () => {
+    // מוסיף את התראות הדמה לרשימה
+    const alertsWithTime = dummyAlerts.map((alert) => ({
+      ...alert,
+      time: new Date().toLocaleTimeString(),
+    }));
+    setAlerts(alertsWithTime);
+  };
 
   return (
     <div className="alerts-container">
-      {loading && !error && <p>נטען...</p>}
-      {error && <p className="error-message">{error}</p>}
+      {loading && <p>נטען...</p>}
+      <button
+        onClick={() => setShowAllAlerts(!showAllAlerts)}
+        className="alerts-btn"
+      >
+        {showAllAlerts ? "הסתר התראות" : "התראות בזמן אמת"}
+      </button>
 
-      {!loading && !error && (
-        <button
-          onClick={() => setShowAllAlerts(!showAllAlerts)}
-          className="alerts-btn"
-        >
-          {showAllAlerts ? "הסתר התראות" : "התראות בזמן אמת"}
-        </button>
-      )}
-
-      {showAllAlerts && !loading && (
+      {showAllAlerts ? (
         alerts.length > 0 ? (
           alerts.map((alert, index) => (
             <div key={index} className="alert-item">
               <div className="alert-header">
                 <strong>התראה: טמפרטורה גבוהה!</strong>
-                <p>שעה: {new Date(alert.date).toLocaleTimeString()}</p>
+                <p>שעה: {alert.time}</p>
               </div>
-              <p>מיקום: {alert.location.lat}, {alert.location.lng}</p>
-              <p>טמפרטורה: {alert.temperature}°C</p>
+              <p>רחוב: {alert.location}</p>
+              <p>טמפרטורה: {alert.Temperature}°C</p>
             </div>
           ))
         ) : (
-          <p>אין התראות כרגע.</p>
+          <div>
+            <p>אין התראות כרגע.</p>
+            <button
+              onClick={handleShowDummyAlerts}
+              className="dummy-alerts-btn"
+            >
+              הצג התראות דמה
+            </button>
+          </div>
         )
-      )}
+      ) : null}
     </div>
   );
 };
