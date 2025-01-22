@@ -3,7 +3,7 @@ import './Modal.css';  // ייבוא קובץ ה-CSS למודל
 import Login from './LogIn';
 import Register from './Register';
 
-const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
+const Modal = ({ isOpen, onClose, activeForm, setActiveForm, switchLanguage }) => {
   if (!isOpen) return null;
 
   // קובע איזה טופס להציג
@@ -12,13 +12,13 @@ const Modal = ({ isOpen, onClose, activeForm, setActiveForm }) => {
       case 'login':
         return (
           <div className="form-side">
-            <Login />
+            <Login switchLanguage={switchLanguage} />
           </div>
         );
       case 'register':
         return (
           <div className="form-side">
-            <Register />
+            <Register switchLanguage={switchLanguage} />
           </div>
         );
       default:

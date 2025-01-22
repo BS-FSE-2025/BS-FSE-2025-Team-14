@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../auth';
+import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 
-function Login() {
+
+function Login({ switchLanguage }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('dogowner');
   
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (switchLanguage) {
+      switchLanguage(); // קרא לפונקציה לעדכן את התרגום עבור אלמנטים עם data-translate
+    }
+  }, [switchLanguage]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,10 +56,10 @@ function Login() {
 
   return (
     <div>
-      <h2>התחבר</h2>
+      <h2 data-translate="loginTitle">התחבר</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">שם משתמש:</label>
+          <label htmlFor="username" data-translate="usernameLabel">שם משתמש:</label>
           <input
             type="text"
             id="username"
@@ -63,7 +71,7 @@ function Login() {
         </div>
 
         <div>
-          <label htmlFor="password">סיסמה:</label>
+          <label htmlFor="password"  data-translate="passwordLabel">סיסמה:</label>
           <input
             type="password"
             id="password"
@@ -75,19 +83,19 @@ function Login() {
         </div>
 
         <div>
-          <label htmlFor="role">בחר תפקיד:</label>
+          <label htmlFor="role" data-translate="roleLabel">בחר תפקיד:</label>
           <select
             id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
           >
-            <option value="dogowner">בעל כלב</option>
-            <option value="dogwalker">דוג ווקר</option>
-            <option value="vet">וטרינר</option>
+            <option value="dogowner" data-translate="dogOwnerOption">בעל כלב</option>
+            <option value="dogwalker" data-translate="dogWalkerOption">דוג ווקר</option>
+            <option value="vet" data-translate="vetOption">וטרינר</option>
           </select>
         </div>
 
-        <button type="submit">התחבר</button>
+        <button type="submit" data-translate="loginButton">התחבר</button>
       </form>
     </div>
   );
