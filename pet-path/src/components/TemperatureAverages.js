@@ -31,27 +31,30 @@ const TemperatureAverage = () => {
   const calculateMonthlyAverage = () => {
     const oneMonthAgo = new Date();
     oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1); // מחזיר את התאריך לפני חודש
-
-    // סינון קריאות מהחודש האחרון לבאר שבע
+  
+    // סינון קריאות מהחודש האחרון עבור באר שבע
     const filteredReadings = readings.filter((reading) => {
       const readingDate = new Date(reading.date);
-      const isInBeersheva = reading.location === "באר שבע"; // אם הקריאה היא מבאר שבע
-      const isWithinLastMonth = readingDate >= oneMonthAgo; // אם הקריאה היא בחודש האחרון
+      const isInBeersheva =
+        reading.location.lat === 31.2521 && reading.location.lng === 34.7868; // בדיקה אם הקריאה היא מבאר שבע
+      const isWithinLastMonth = readingDate >= oneMonthAgo; // בדיקה אם הקריאה בחודש האחרון
       return isInBeersheva && isWithinLastMonth;
     });
-
+  
     if (filteredReadings.length === 0) {
-      setAverage(0);
+      setAverage(0); // אם אין קריאות, הממוצע הוא 0
       return;
     }
-
+  
+    // חישוב ממוצע הטמפרטורות
     const totalTemperature = filteredReadings.reduce(
-      (sum, reading) => sum + reading.Temperature,
+      (sum, reading) => sum + reading.temperature,
       0
     );
     const avg = totalTemperature / filteredReadings.length;
     setAverage(avg.toFixed(2)); // מעגלים ל-2 ספרות אחרי הנקודה
   };
+  
 
   return (
     <div className="temperature-average-container">
