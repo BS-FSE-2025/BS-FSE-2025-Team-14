@@ -38,6 +38,18 @@ export const translations = {
     "We are a group of students who believe that with advanced technology, we can improve the quality of life of our four-legged best friends": "אנחנו קבוצה של סטודנטים שמאמינים שעם טכנולוגיה מתקדמת אפשר לשפר את איכות החיים של החברים הכי טובים שלנו על ארבע",
     "Our vision is to develop smart tools to protect their health and solve everyday challenges": "החזון שלנו הוא לפתח כלים חכמים לשמירה על בריאותם ולפתרון אתגרים יומיומיים",
     "We work with love for animals and believe that technology can improve the lives of both dogs and humans": "אנחנו פועלים מתוך אהבה לבעלי חיים ומאמינים שהטכנולוגיה יכולה לשפר חיים של כלבים ובני אדם.", 
+    "your safe path starts here": "המסלול הבטוח שלך מתחיל כאן",
+    "search": "חפש",
+    "LOG IN": "התחבר",
+    "user": "משתמש",
+    "password": "סיסמה",
+    "username": ":שם משתמש",
+   "enter password": "הכנס סיסמה",
+    "enter username": "הכנס שם משתמש",
+    "register": "הרשמה",
+    "log in": "התחברות",
+    "sign in": "הרשם"
+
   },
   en: {
     "אודות": "About",
@@ -77,6 +89,18 @@ export const translations = {
     "אנחנו קבוצה של סטודנטים שמאמינים שעם טכנולוגיה מתקדמת אפשר לשפר את איכות החיים של החברים הכי טובים שלנו על ארבע": "We are a group of students who believe that with advanced technology, we can improve the quality of life of our four-legged best friends",
     "החזון שלנו הוא לפתח כלים חכמים לשמירה על בריאותם ולפתרון אתגרים יומיומיים": "Our vision is to develop smart tools to protect their health and solve everyday challenges",
     "אנחנו פועלים מתוך אהבה לבעלי חיים ומאמינים שהטכנולוגיה יכולה לשפר חיים של כלבים ובני אדם.": "We work with love for animals and believe that technology can improve the lives of both dogs and humans",
+    "המסלול הבטוח שלך מתחיל כאן": "your safe path starts here",
+    "חפש": "search",
+    "התחבר": "LOG IN",
+    "משתמש": "user",
+    "סיסמה": "password",
+    ":שם משתמש": "username",
+    "הכנס סיסמה": "enter password",
+    "הכנס שם משתמש": "enter username",
+    "הרשמה": "register",
+    "התחברות": "log in",
+    "הרשם": "sign in"
+
   },
 };
 
