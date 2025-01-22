@@ -235,18 +235,29 @@ nav ul li a:hover {
     width: 100%;
     height: 5px;
     background-color: #4a3627; 
-}
-footer {
-    background-color: #f4f1e1; /* רקע בהיר */
-    padding: 20px 0;
+}footer {
     text-align: center;
-    border-top: 2px solid #4a3627; /* קו חום כהה בחלק העליון */
-}
-.footer-content p {
-    font-size: 1rem;
-    color: #4a3627; /* צבע חום כהה */
-    margin: 0;
-}.modal {
+    padding: 20px 0;
+  }
+  
+  .footer-content {
+    position: relative;
+  }
+  
+  .footer-image-container {
+    display: flex;
+    justify-content: flex-start; /* מתחיל מהצד שמאל */
+    align-items: center; /* מוודא שהתמונה ממורכזת גם אנכית */
+  }
+  
+  .footer-image {
+    max-width: 100%; /* התמונה תתפוס את הרוחב המרבי של האלמנט שלה */
+    height: auto; /* שימור על יחס הגובה והרוחב של התמונה */
+    object-fit: cover; /* מוודא שהתמונה לא תימתח או תימעך */
+  }
+  
+
+.modal {
     width: 80%;
     height: 80%;
     position: fixed;

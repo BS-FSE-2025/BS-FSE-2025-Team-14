@@ -123,9 +123,6 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
       }
     };
     
-
-
-
   const openModal = () => {
     if (!isAuthenticated) {
       setIsModalOpen(true); // אם המשתמש לא מחובר, נפתח את המודל
@@ -373,14 +370,15 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
           )}
         </div>
 
-         <div className="divider"></div>
+        <div className="divider"></div>
+         <footer>
+  <div className="footer-content">
+    <div className="footer-image-container">
+      <img src="media/downdogs.png" alt="dogs" className="footer-image" />
+    </div>
+  </div>
+</footer>
 
-
-      <footer>
-        <div className="footer-content">
-          <p>&copy; 2024 PetPath. כל הזכויות שמורות.</p>
-        </div>
-      </footer>
     </div>
   );
 }
