@@ -185,9 +185,7 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
            
          </div>
        )}
- 
-       <div className="divider"></div>
-       <div className="divider"></div>
+       
       <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
@@ -197,6 +195,46 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
               title="מפה"
             ></iframe>
       </div>
+
+      <div className="divider"></div> 
+            <div className="articles-container section"> 
+              <h2>מאמרים מומלצים</h2>
+              <div className="articles-grid">
+                <div className="article-item">
+                  <a href="https://www.ynet.co.il/articles/0,7340,L-4993123,00.html" target="_blank" rel="noopener noreferrer">
+                    <img src="/media/article1.jpg" alt="מאמר 1" className="article-image" />
+                  </a>
+                  <p>המלצות לימים חמים</p>
+                </div>
+                <div className="article-item">
+                  <a href="https://www.starsandstripesdogrescue.org/post/how-heat-affects-walking-your-dog" target="_blank" rel="noopener noreferrer">
+                    <img src="/media/article2.jpg" alt="מאמר 2" className="article-image" />
+                  </a>
+                  <p>כיצד חום משפיע על טיולים עם הכלב</p>
+                </div>
+                <div className="article-item">
+                  <a href="https://www.33rdsquare.com/helping-your-dog-heal-a-comprehensive-guide-to-treating-paw-pad-burns/" target="_blank" rel="noopener noreferrer">
+                    <img src="/media/article3.jpg" alt="מאמר 3" className="article-image" />
+                  </a>
+                  <p>מדריך לטיפול בכוויות בכפות הרגליים של כלבים</p>
+                </div>
+                <div className="article-item">
+                  <a href="https://wolfcenter.org/paws-can-help-dogs-regulate-their-temperature/" target="_blank" rel="noopener noreferrer">
+                    <img src="/media/article4.jpg" alt="מאמר 4" className="article-image" />
+                  </a>
+                  <p>איך כפות הרגליים עוזרות לכלבים לווסת חום</p>
+                </div>
+                <div className="article-item">
+                  <a href="https://www.akc.org/expert-advice/health/dog-paws-hot-pavement/" target="_blank" rel="noopener noreferrer">
+                    <img src="/media/article5.jpg" alt="מאמר 5" className="article-image" />
+                  </a>
+                  <p>כלבים ומדרכות חמות</p>
+                </div>
+              </div>
+        </div>
+
+
+      
 
       <div className="divider"></div>
 

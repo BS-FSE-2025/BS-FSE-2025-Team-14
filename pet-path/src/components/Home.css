@@ -536,3 +536,37 @@ nav ul li .logout-button {
 nav ul li .logout-button:hover {
     background-color: #7a5a45; /* צבע רקע כהה יותר בריחוף */
 }
+
+.articles-container {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f4f1e1; /* כמו יתר החלקים באתר */
+    border-radius: 8px;
+}
+
+.articles-container h2 {
+    font-size: 2rem;
+    color: #4a3627; /* צבע כותרת חום כהה */
+    margin-bottom: 30px;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.article-image {
+    width: 100%;
+    max-width: 200px; /* הגבלת רוחב התמונה */
+    height: auto; /* שמירה על יחס גובה-רוחב */
+    border-radius: 8px; /* פינות מעוגלות */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* הצללה עדינה */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-image:hover {
+    transform: scale(1.05); /* אפקט זום */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* הצללה מוגברת */
+}
