@@ -1,0 +1,62 @@
+/* עיצוב כללי */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* כותרת */
+  h2 {
+    font-size: 24px;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+  }
+  
+  /* עיצוב הקונטיינר של הכפתורים */
+  .image-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+  }
+  
+  /* כפתורים */
+  .image-buttons button {
+    border: 2px solid #ddd;
+    background-color: #fff;
+    cursor: pointer;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  /* אפקט של הכפתורים */
+  .image-buttons button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* תמונות */
+  .image-buttons img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  /* טקסט התוצאה */
+  .result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
