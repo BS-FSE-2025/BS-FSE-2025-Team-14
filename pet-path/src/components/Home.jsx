@@ -243,6 +243,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <h2>כותבים עלינו</h2>
         <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
       </div>
+      <div className="divider"></div>
         {/* Display Existing Recommendations */}
         <div className="recommendations-list">
           <h3>המלצות קיימות</h3>
@@ -274,6 +275,8 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
            <h2>בעלי מקצוע</h2>
            <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
            </div>
+           <div className="divider"></div>
+
 {/* Add publish Form */}
 
         {/* Display Existing Publish */}
