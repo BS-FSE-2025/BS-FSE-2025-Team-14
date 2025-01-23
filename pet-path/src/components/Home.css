@@ -355,39 +355,6 @@ nav ul li a:hover {
     text-align: center; /* למרכז את כותרת הטופס */
 }
 
-.recommendation-form input,
-.recommendation-form textarea,
-.recommendation-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 2px solid #d1c6b1;
-    border-radius: 5px;
-    font-size: 1rem;
-    color: #4a3627;
-    background-color: #fff;
-}
-
-.recommendation-form textarea {
-    height: 150px;
-}
-
-.recommendation-form button {
-    background-color: #4a3627;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
-}
-
-.recommendation-form button:hover {
-    background-color: #7a5a45;
-}
 
 /* עיצוב תצוגת ההמלצות - מרכז את הרשימה */
 .recommendations-list {
