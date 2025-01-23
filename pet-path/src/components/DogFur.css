@@ -1,62 +1,61 @@
-/* עיצוב כללי */
+/* הגדרות בסיסיות */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f8f8;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    font-family: Arial, sans-serif;
   }
   
-  /* כותרת */
   h2 {
     font-size: 24px;
-    color: #4a4a4a;
-    margin-bottom: 20px;
+    color: #333;
   }
   
-  /* עיצוב הקונטיינר של הכפתורים */
+  /* עיצוב התמונה */
   .image-buttons {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
+    margin-top: 20px;
   }
   
-  /* כפתורים */
-  .image-buttons button {
-    border: 2px solid #ddd;
-    background-color: #fff;
+  .image-container {
+    text-align: center;
+    display: inline-block;
+    width: 150px; /* קובע גודל קבוע לתמונות */
+  }
+  
+  .image-container h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .image-container button {
+    background: none;
+    border: none;
+    padding: 0;
     cursor: pointer;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
   }
   
-  /* אפקט של הכפתורים */
-  .image-buttons button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  .image-container img {
+    width: 100%;
+    height: auto;
+    max-width: 150px; /* קובע גודל מקסימלי לכל תמונה */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
-  /* תמונות */
-  .image-buttons img {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  
-  /* טקסט התוצאה */
+  /* עיצוב המידע */
   .result {
     margin-top: 20px;
     font-size: 18px;
-    color: #333;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
   }
+  
   

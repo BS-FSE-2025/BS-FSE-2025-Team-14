@@ -196,6 +196,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <p>המסייעת לבחור את הזמן והמקום האידיאליים לטיול ופעילויות חוץ עם כלבים</p>
         <p>תוך התחשבות בתנאי מזג האוויר, טמפרטורת הקרקע ורמת הקרינה</p>
       </div>
+      <div className="divider"></div>
 
       <div className="section" id="features">
         <h2>מה אנחנו מציעים?</h2>

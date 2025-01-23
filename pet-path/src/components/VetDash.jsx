@@ -5,8 +5,6 @@ import { switchLanguage } from './Translate';
 import TemperatureAverage from './TemperatureAverages'; // ייבוא רכיב ממוצע טמפרטורות
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
 
-
-
 function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
   const [userInfo, setUserInfo] = useState(user || null);
   const [showProfile, setShowProfile] = useState(false); // מצב להצגת פרופיל
@@ -178,9 +176,6 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
 )}
 
 
-
-
-
       {/* הצגת חלונית הגדרות */}
       {isSettingsOpen && (
         <div className="settings-popup">
@@ -194,7 +189,6 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
 </div>
 
       <div className="divider"></div>
-      <div className="divider"></div>
       <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
@@ -204,8 +198,8 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
               title="מפה"
             ></iframe>
       </div>
+     
       <div className="divider"></div>
-
 
       <div className="section" id="reviews">
         <h2>כותבים עלינו</h2>

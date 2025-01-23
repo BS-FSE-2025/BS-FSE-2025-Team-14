@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Home.css';
 import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
+import DogFur from "./DogFur";
 
 
 function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
@@ -24,7 +25,6 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
  
    const navigate = useNavigate(); // שימוש בפונקציה לנווט בין דפים
-   
 
    useEffect(() => {
      if (!userInfo) {
@@ -174,11 +174,7 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
      <p style={{ fontSize: '16px', textAlign: 'center', marginTop: '0', marginBottom: '5px' }}>.(עברית,אנגלית) אפשרות שינוי שפה</p>
    </div>
  )}
- 
- 
- 
- 
- 
+
        {/* הצגת חלונית הגדרות */}
        {isSettingsOpen && (
          <div className="settings-popup">
@@ -187,7 +183,11 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
        )}
  
        <div className="divider"></div>
-       <div className="divider"></div>
+       <div>
+      <DogFur />
+       </div>
+      <div className="divider"></div>
+
       <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
@@ -197,10 +197,9 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
               title="מפה"
             ></iframe>
       </div>
-
+     
       <div className="divider"></div>
 
- 
        <div className="section" id="reviews">
          <h2>כותבים עלינו</h2>
          <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>

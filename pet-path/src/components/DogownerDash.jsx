@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Home.css';
 import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
+import DogFur from "./DogFur";
 
 
 function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
@@ -176,10 +177,6 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
     </div>
   )}
   
-  
-  
-  
-  
         {/* הצגת חלונית הגדרות */}
         {isSettingsOpen && (
           <div className="settings-popup">
@@ -187,11 +184,12 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
           </div>
         )}
 
-        
-  
-
         <div className="divider"></div>
-        <div className="divider"></div>
+        <div>
+      <DogFur />
+       </div>
+      <div className="divider"></div>
+      
         <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
@@ -201,6 +199,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
               title="מפה"
             ></iframe>
       </div>
+      
       <div className="divider"></div>
 
   
