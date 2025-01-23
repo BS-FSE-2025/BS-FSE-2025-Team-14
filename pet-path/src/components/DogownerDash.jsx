@@ -78,6 +78,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
         console.error("Error adding recommendation:", err);
       }
     };
+    
   
     const fetchPublish = async () => {
       try {
@@ -185,8 +186,23 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
             
           </div>
         )}
+
+        
   
+
         <div className="divider"></div>
+        <div className="divider"></div>
+        <div> 
+            <iframe //showing MAP file using iframe
+              src= "/maps.html"  
+              width="100%"    
+              height="600px"   
+              style={{ border: 'none' }}  
+              title="מפה"
+            ></iframe>
+      </div>
+      <div className="divider"></div>
+
   
         <div className="section" id="reviews">
           <h2>כותבים עלינו</h2>
