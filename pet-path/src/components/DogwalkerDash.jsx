@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
 import DogFur from "./DogFur";
 
@@ -136,9 +135,7 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
    return (
      <div>
        <header>
-         <button id="language-switcher" onClick={switchLanguage}>
-           עברית / English
-         </button>
+
          
          <div className="logo-container">
            <div className="logo">

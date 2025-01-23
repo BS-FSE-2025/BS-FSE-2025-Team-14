@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Home.jsx'
 import './Home.css';
-import { switchLanguage } from './Translate'; 
 import TemperatureAverage from './TemperatureAverages'; // ייבוא רכיב ממוצע טמפרטורות
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
 
@@ -139,9 +138,6 @@ function VetDash({ isAuthenticated, onLogin, onRegister, user }) {
   return (
     <div>
       <header>
-        <button id="language-switcher" onClick={switchLanguage}>
-          עברית / English
-        </button>
         
         <div className="logo-container">
           <div className="logo">
