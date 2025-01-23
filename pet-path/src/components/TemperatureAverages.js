@@ -63,13 +63,13 @@ const TemperatureAverage = () => {
 
       {!loading && !error && (
         <button onClick={calculateMonthlyAverage} className="calculate-btn">
-          חשב ממוצע טמפרטורות לשבוע האחרון (באר שבע)
+          חשב ממוצע טמפרטורות לחודש האחרון (באר שבע)
         </button>
       )}
 
       {average !== null && (
         <div className="average-display">
-          <p>ממוצע טמפרטורות הקרקע בחודש האחרון בבאר שבע: {average}°C</p>
+          <p>ממוצע טמפרטורות הקרקע בחודש האחרון בבאר שבע: {average}°</p>
         </div>
       )}
     </div>

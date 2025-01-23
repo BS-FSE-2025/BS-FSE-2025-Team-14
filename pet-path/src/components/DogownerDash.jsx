@@ -138,7 +138,6 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       <div>
         <header>
 
-          
           <div className="logo-container">
             <div className="logo">
               <img src="/media/logo.png.jpg" alt="logo" />
@@ -149,16 +148,20 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
             </div>
           </div>
           <nav>
-            <ul>
-              <li><a href="#" onClick={(e) => { e.preventDefault(); setShowProfile(!showProfile); }}>פרופיל</a></li>
-              <li><a href="#" onClick={toggleSettings}>הגדרות המערכת</a></li> {/* כפתור הגדרות */}
-              <li><a href="#reviews">כותבים עלינו</a></li>
-              <li><a href="#publish">עסקים מומלצים</a></li>
-              <li><button onClick={handleLogout} className="logout-button">התנתק</button></li> {/* כפתור התנתקות */}
-            </ul>
-          </nav>
+  <ul>
+    <li><a href="#mydog">הכלב שלי</a></li>
+    <li><a href="#map">תכנן מסלול</a></li>
+    <li><a href="#article">מידע</a></li>
+    <li><a href="#reviews">כתבו עלינו</a></li>
+    <li><a href="#publish">עסקים</a></li>
+    <li><button onClick={handleLogout} className="logout-button">התנתק</button></li>
+  </ul>
+  <ul class="profile-settings">
+    <li><a href="#profile" class="profile-link" onClick={(e) => { e.preventDefault(); setShowProfile(!showProfile); }}>פרופיל</a></li>
+    <li><a href="#setting" class="settings-link" onClick={toggleSettings}>עזרה</a></li>
+  </ul>
+</nav>
         </header>
-        
   
         {showProfile && userInfo && (
           <div className="profile-popup">
@@ -167,12 +170,20 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
         )}
         
         {isSettingsOpen && (
-    <div className="settings-popup" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '10vh' }}>
-      <p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', marginBottom: '5px' }}>:הגדרות המערכת</p>
-      <p style={{ fontSize: '16px', textAlign: 'center', marginTop: '0', marginBottom: '5px' }}>.(עברית,אנגלית) אפשרות שינוי שפה</p>
-    </div>
-  )}
-  
+  <div className="settings-popup" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 'auto', padding: '20px', borderRadius: '8px', backgroundColor: '#f4f4f4', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+    <p style={{ fontSize: '18px', fontWeight: 'bold', textAlign: 'center', marginBottom: '10px' }}>עזרה</p>
+    <p style={{ fontSize: '16px', textAlign: 'center', marginBottom: '10px' }}>האפשרויות השונות במערכת</p>
+    <ul style={{ fontSize: '16px', textAlign: 'center', marginTop: '0', padding: '0', listStyleType: 'none' }}>
+      <li>מידע על הכלב שלי - בחירת פרטי הכלב לפי אורך הפרווה וקבלת המלצות מותאמות אישית.</li>
+      <li>הצגת מפות ומסלולים - אפשרות לראות מסלולים על המפה לפי חיישנים שמשתנים בזמן אמת.</li>
+      <li>מאמרים - קריאה והבנת מידע חשוב על בריאות לכלב.</li>
+      <li>הוספת המלצה - אפשרות להוסיף המלצות אישיות על האתר עבור בעלי כלבים אחרים.</li>
+      <li>הוספת עסק לפרסום - אפשרות להוסיף עסקים בתחום הכלבים למסד הנתונים שלנו.</li>
+      <li>התראות - קבלת התראות בזמן אמת על מצב מזג האוויר והבטיחות להליכה עם הכלב.</li>
+    </ul>
+  </div>
+)}
+
         {/* הצגת חלונית הגדרות */}
         {isSettingsOpen && (
           <div className="settings-popup">
@@ -181,12 +192,13 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
         )}
 
         <div className="divider"></div>
-        <div>
+
+        <div className="section" id="mydog">
       <DogFur />
        </div>
       <div className="divider"></div>
       
-        <div> 
+        <div className="section" id="map">
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
               width="100%"    
@@ -197,11 +209,9 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       </div>
 
 
-
-
       <div className="divider"></div> 
-            <div className="articles-container section"> 
-              <h2>מאמרים מומלצים</h2>
+      <div className="section" id="article">
+      <h2>מאמרים מומלצים</h2>
               <div className="articles-grid">
                 <div className="article-item">
                   <a href="https://www.ynet.co.il/articles/0,7340,L-4993123,00.html" target="_blank" rel="noopener noreferrer">
@@ -236,12 +246,6 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
               </div>
         </div>
 
-
-
-
-
-
-
       <div className="divider"></div>
 
   
@@ -249,6 +253,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
           <h2>כותבים עלינו</h2>
           <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
         </div>
+        <div className="divider"></div>
   
         <div className="recommendation-form">
           <h3>הוסף המלצה</h3>
@@ -321,6 +326,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
           <h2>בעלי מקצוע</h2>
           <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
         </div>
+        <div className="divider"></div>
   
         <div className="publish-form">
           <h3>הוסף עסק</h3>

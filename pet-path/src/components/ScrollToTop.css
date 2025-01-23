@@ -1,0 +1,21 @@
+.scroll-to-top {
+    position: fixed; /* מיקום קבוע על המסך */
+    bottom: 20px; /* מרחק מתחתית המסך */
+    right: 20px; /* מרחק מצד ימין */
+    background-color: #6f4e37; /* צבע חום */
+    color: #fff; /* צבע טקסט לבן */
+    border: none; /* בלי מסגרת */
+    border-radius: 50%; /* עיגול */
+    width: 50px; /* גודל קבוע */
+    height: 50px;
+    cursor: pointer; /* סמן של כפתור */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* צל */
+    transition: transform 0.3s ease; /* אפקט מעבר */
+    z-index: 1000; /* כדי לוודא שהוא מעל הכל */
+  }
+  
+  .scroll-to-top:hover {
+    transform: scale(1.1); /* הגדלה באפקט ריחוף */
+    background-color: #553f2e; /* צבע חום כהה יותר */
+  }
+  

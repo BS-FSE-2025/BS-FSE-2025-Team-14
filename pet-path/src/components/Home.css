@@ -6,6 +6,7 @@ body {
     background-color: #f8f5f0;
     color: #4a3627;
 }
+  
 /* עיצוב כותרת עליונה */
 header {
     display: flex;
@@ -56,6 +57,30 @@ nav ul li a {
 nav ul li a:hover {
     color: #7a5a45;
 }
+/* כפתורים "פרופיל" ו-"הגדרות" בצד ימין */
+.profile-settings {
+    position: absolute;
+    top: 80px;        /* מרחק מהחלק העליון */
+    right: 0;      /* מרחק מהקצה הימני */
+    list-style-type: none; /* מסיר את התבליטים */
+    padding: 0;       /* מסיר ריפוד */
+    margin: 0;        /* מסיר מרווח */
+  }
+  
+  .profile-settings li {
+    margin-bottom: 15px; /* רווח בין הכפתורים */
+  }
+
+  /* עיצוב ספציפי לכפתור "פרופיל" */
+  .profile-link {
+    background-color: #edeae8; /* צבע חום כהה */
+  }
+  
+  /* עיצוב ספציפי לכפתור "הגדרות" */
+  .settings-link {
+    background-color: #edeae8; /* צבע חום כהה */
+  }
+  
 /* עיצוב כפתור הצטרפות */
 .register-button {
     background-color: #4a3627;
@@ -72,6 +97,7 @@ nav ul li a:hover {
 .register-button:hover {
     background-color: #7a5a45;
 }
+
 /* עיצוב לחלקי עמוד */
 .section {
     padding: 50px 20px;
@@ -542,7 +568,7 @@ nav ul li a:hover {
 #language-switcher {
     position: fixed; /* מיקום קבוע במסך */
     bottom: 20px;    /* 20px מהחלק התחתון של המסך */
-    right: 20px;     /* 20px מהקצה הימני של המסך */
+    right: 80px;     /* 20px מהקצה הימני של המסך */
     padding: 10px 20px; /* ריווח בתוך הכפתור */
     background-color: #8e7c66; /* צבע רקע בגוון חום-ים ניטרלי */
     color: white;    /* צבע טקסט */
