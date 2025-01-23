@@ -196,7 +196,6 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <p>המסייעת לבחור את הזמן והמקום האידיאליים לטיול ופעילויות חוץ עם כלבים</p>
         <p>תוך התחשבות בתנאי מזג האוויר, טמפרטורת הקרקע ורמת הקרינה</p>
       </div>
-
       <div className="divider"></div>
 
       <div className="section" id="features">
@@ -244,6 +243,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <h2>כותבים עלינו</h2>
         <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
       </div>
+      <div className="divider"></div>
         {/* Display Existing Recommendations */}
         <div className="recommendations-list">
           <h3>המלצות קיימות</h3>
@@ -275,6 +275,8 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
            <h2>בעלי מקצוע</h2>
            <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
            </div>
+           <div className="divider"></div>
+
 {/* Add publish Form */}
 
         {/* Display Existing Publish */}

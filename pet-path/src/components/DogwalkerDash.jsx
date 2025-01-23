@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Home.css';
 import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 import { useNavigate } from 'react-router-dom'; // ייבוא שימוש ב-React Router
+import DogFur from "./DogFur";
 
 
 function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
@@ -24,7 +25,6 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
  
    const navigate = useNavigate(); // שימוש בפונקציה לנווט בין דפים
-   
 
    useEffect(() => {
      if (!userInfo) {
@@ -174,18 +174,20 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
      <p style={{ fontSize: '16px', textAlign: 'center', marginTop: '0', marginBottom: '5px' }}>.(עברית,אנגלית) אפשרות שינוי שפה</p>
    </div>
  )}
- 
- 
- 
- 
- 
+
        {/* הצגת חלונית הגדרות */}
        {isSettingsOpen && (
          <div className="settings-popup">
            
          </div>
        )}
-       
+ 
+       <div className="divider"></div>
+       <div>
+      <DogFur />
+       </div>
+      <div className="divider"></div>
+
       <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
@@ -238,7 +240,6 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
 
       <div className="divider"></div>
 
- 
        <div className="section" id="reviews">
          <h2>כותבים עלינו</h2>
          <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
@@ -270,6 +271,19 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
              <option value="dogwalker">מטייל כלבים</option>
              <option value="dogowner">בעל כלב</option>
            </select>
+           <label>דירוג:</label>
+              <select
+                name="rating"
+                value={newRecommendation.rating || ''}
+                onChange={handleRecommendationChange}
+              >
+                <option value="">בחר דירוג</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+              </select>
            <button type="submit">הוסף המלצה</button>
          </form>
        </div>
@@ -282,6 +296,14 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
                <h4>{recommendation.name}</h4>
                <p>{recommendation.description}</p>
                <p><strong>{recommendation.role}</strong></p>
+               <p>דירוג:</p>
+                <div className="star-rating">
+                  {[...Array(5)].map((star, index) => (
+                    <span key={index} style={{ color: index < recommendation.rating ? 'gold' : 'gray' }}>
+                      ★
+                    </span>
+                  ))}
+                </div>
              </div>
            ))
          ) : (
@@ -352,3 +374,5 @@ function DogwalkerDash({ isAuthenticated, onLogin, onRegister, user }) {
  
 
 export default DogwalkerDash;
+
+
