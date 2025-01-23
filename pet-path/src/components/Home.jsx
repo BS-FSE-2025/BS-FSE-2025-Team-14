@@ -197,8 +197,6 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <p>תוך התחשבות בתנאי מזג האוויר, טמפרטורת הקרקע ורמת הקרינה</p>
       </div>
 
-      <div className="divider"></div>
-
       <div className="section" id="features">
         <h2>מה אנחנו מציעים?</h2>
         <ul>
