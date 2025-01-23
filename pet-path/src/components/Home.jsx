@@ -244,53 +244,6 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         <h2>כותבים עלינו</h2>
         <p>חוות דעת וביקורות ממשתמשים מרוצים.</p>
       </div>
-      {/* Add Recommendation Form */}
-      
-          <div className="recommendation-form">
-            <h3>הוסף המלצה</h3>
-            <form onSubmit={handleRecommendationSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="שם"
-                value={newRecommendation.name}
-                onChange={handleRecommendationChange}
-              />
-              <textarea
-                name="description"
-                placeholder="תיאור"
-                value={newRecommendation.description}
-                onChange={handleRecommendationChange}
-              />
-              <select
-                name="role"
-                value={newRecommendation.role}
-                onChange={handleRecommendationChange}
-              >
-                <option value="">בחר תפקיד</option>
-                <option value="vet">וטרינר</option>
-                <option value="dogwalker">מטייל כלבים</option>
-                <option value="dogowner">בעל כלב</option>
-
-              </select>
-              <label>דירוג:</label>
-              <select
-                name="rating"
-                value={newRecommendation.rating || ''}
-                onChange={handleRecommendationChange}
-              >
-                <option value="">בחר דירוג</option>
-                <option value="1">⭐</option>
-                <option value="2">⭐⭐</option>
-                <option value="3">⭐⭐⭐</option>
-                <option value="4">⭐⭐⭐⭐</option>
-                <option value="5">⭐⭐⭐⭐⭐</option>
-              </select>
-              <button type="submit">הוסף המלצה</button>
-            </form>
-          </div>
-        
-
         {/* Display Existing Recommendations */}
         <div className="recommendations-list">
           <h3>המלצות קיימות</h3>
@@ -323,36 +276,6 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
            <p>בעלי עסק מקצוענים שבוחרים PetPath</p>
            </div>
 {/* Add publish Form */}
-
-        <div className="publish-form">
-            <h3>הוסף עסק</h3>
-            <form onSubmit={handlePublishSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="שם"
-                value={newPublish.name}
-                onChange={handlePublishChange}
-              />
-              <textarea
-                name="description"
-                placeholder="השירותים שהעסק שלי מציע"
-                value={newPublish.description}
-                onChange={handlePublishChange}
-              />
-              <select
-                name="role"
-                value={newPublish.role}
-                onChange={handlePublishChange}
-              >
-                <option value="">בחר תפקיד</option>
-                <option value="vet">וטרינר</option>
-                <option value="dogwalker">מטייל כלבים</option>
-              </select>
-              <button type="submit">הוסף עסק</button>
-            </form>
-          </div>
-        
 
         {/* Display Existing Publish */}
         <div className="Publish-list">
