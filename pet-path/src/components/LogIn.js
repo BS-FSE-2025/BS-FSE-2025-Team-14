@@ -63,7 +63,7 @@ function Login({ switchLanguage }) {
           <input
             type="text"
             id="username"
-            placeholder="הכנס שם משתמש"
+            placeholder="Enter Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
