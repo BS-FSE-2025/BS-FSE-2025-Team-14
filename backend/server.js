@@ -16,6 +16,7 @@ app.use(cors({
 }));
 
 
+
 // חיבור ל-MongoDB Atlas
 
 const dbURI = 'mongodb+srv://yaelle:petpath2024@cluster0.dnotx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
@@ -511,7 +512,7 @@ async function deleteOldReadings() {
 
 // הפעלת השרת רק אם הקובץ נריץ ישירות
 if (require.main === module) {
-  const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
