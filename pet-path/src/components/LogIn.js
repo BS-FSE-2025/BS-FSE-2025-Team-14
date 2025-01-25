@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../auth';
-import { switchLanguage } from './Translate'; // ייבוא נכון של הפונקציה
 
 
 function Login({ switchLanguage }) {
