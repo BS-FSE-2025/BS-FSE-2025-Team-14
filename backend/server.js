@@ -474,11 +474,11 @@ async function uploadHistoricalData(startDate, endDate) {
   }
 }
 
-const historicalStart = new Date("2025-01-07T00:00:00Z");
-const historicalEnd = new Date("2025-01-15T00:00:00Z");
+//const historicalStart = new Date("2025-01-07T00:00:00Z");
+//const historicalEnd = new Date("2025-01-15T00:00:00Z");
 
 // הפעלה ידנית של הפונקציה להעלאת נתונים היסטוריים
-uploadHistoricalData(historicalStart, historicalEnd);
+//uploadHistoricalData(historicalStart, historicalEnd);
 
 
     // filter readings for map locations
