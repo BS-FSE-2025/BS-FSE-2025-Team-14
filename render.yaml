@@ -1,8 +1,12 @@
 services:
   - type: web
-    name: backend
+    name: petpath-backend
     env: node
-    buildCommand: cd backend && npm install
-    startCommand: cd backend && node server.js
-    rootDirectory: /backend
     branch: main
+    buildCommand: npm install
+    startCommand: node server.js
+    rootDirectory: main 
+    autoDeploy: true
+    envVars:
+      - key: MONGODB_URI
+        value: "mongodb+srv://yaelle:petpath2024@cluster0.dnotx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
