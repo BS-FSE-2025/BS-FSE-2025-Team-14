@@ -133,6 +133,10 @@ app.get('/publish', async (req, res) => {
 //locations:
 const apiUrl = 'https://atapi.atomation.net/api/v1/s2s/v1_0';
 const deviceMAC = 'CB:85:C7:AB:66:81';
+
+//  run for the first time for initial token 
+// getSensorApiToken()
+
 // פונקציה להשגת טוקן חדש מה-API ושמירתו במסד הנתונים
 async function getSensorApiToken() {
   const url = `${apiUrl}/auth/login`;
@@ -255,7 +259,17 @@ async function refreshToken(refreshToken) {
 
       return newToken; // החזרת הטוקן החדש
     } else {
+      console.error(`Error refreshing token: ${error.message}`); // שורה חדשה
+      console.log("Attempting to fetch a new token..."); // שורה חדשה
+
+    // אם רענון הטוקן נכשל, ננסה לקבל טוקן חדש כמו בפעם הראשונה
+    const newToken = await getSensorApiToken(); // שורה חדשה
+    if (!newToken) { // שורה חדשה
+      throw new Error("Failed to fetch a new token after refresh token failure."); // שורה חדשה
+    }
+    return newToken; // שורה חדשה
       throw new Error("Token or refresh token not found in response.");
+      
     }
   } catch (error) { // שורות אלו שונו
     console.error(`Error refreshing token: ${error.message}`); // שורה חדשה
@@ -277,7 +291,7 @@ async function manageDataFetchAndCleanup() {
     // משיכת נתונים ליומיים האחרונים
     const startDate = new Date(Date.now() - 48 * 60 * 60 * 1000); // יומיים אחורה
     const endDate = new Date();
-    await fetchReadings({ startDate, endDate });
+    await fetchAndProcessReadings({ startDate, endDate });
 
     // מחיקת נתונים ישנים עד ה-7 בינואר 2025
     const january7 = new Date("2025-01-07T00:00:00Z");
@@ -459,13 +473,13 @@ async function uploadHistoricalData(startDate, endDate) {
     console.error("Error during historical data upload:", error.message);
   }
 }
-/*
+
 const historicalStart = new Date("2025-01-07T00:00:00Z");
 const historicalEnd = new Date("2025-01-15T00:00:00Z");
 
 // הפעלה ידנית של הפונקציה להעלאת נתונים היסטוריים
 uploadHistoricalData(historicalStart, historicalEnd);
-*/
+
 
     // filter readings for map locations
    // let locations = [];
