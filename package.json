@@ -4,7 +4,8 @@
   "description": "\"# BS-FSE-2025-Team-14\"",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",

@@ -175,7 +175,7 @@ function Home({ isAuthenticated, onLogin, onRegister, user }) {
         />
       )}
 
-      <div className="divider"></div>
+<div className="divider"></div>
       <div> 
             <iframe //showing MAP file using iframe
               src= "/maps.html"  
