@@ -4,7 +4,7 @@ let last30Readings = [];
 // פונקציה למשיכת 30 הקריאות האחרונות מהשרת ועדכון המשתנה הגלובלי
 export const fetchLast30Readings = async () => {
   try {
-    const response = await fetch("http://localhost:3001/locations", {
+    const response = await fetch("${backendUrl}/locations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

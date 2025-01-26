@@ -2,7 +2,7 @@
 
 // פונקציה להתחברות
 export const loginUser = async (username, password, role) => {
-  const res = await fetch("http://localhost:3001/login", {
+  const res = await fetch("${backendUrl}/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const loginUser = async (username, password, role) => {
 export const registerUser = async (username, password, role) => {
   const newUser = { username, password, role };
 
-  const res = await fetch("http://localhost:3001/register", {
+  const res = await fetch("${backendUrl}/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -38,7 +38,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
   
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('http://localhost:3001/recommendations');
+        const response = await fetch('${backendUrl}/recommendations');
         const data = await response.json();
         setRecommendations(data);
       } catch (err) {
@@ -59,7 +59,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       }
   
       try {
-        const response = await fetch('http://localhost:3001/postRecommendation', {
+        const response = await fetch('${backendUrl}/postRecommendation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
   
     const fetchPublish = async () => {
       try {
-        const response = await fetch('http://localhost:3001/publish');
+        const response = await fetch('${backendUrl}/publish');
         const data = await response.json();
         setPublish(data);
       } catch (err) {
@@ -103,7 +103,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       }
   
       try {
-        const response = await fetch('http://localhost:3001/postPublish', {
+        const response = await fetch('${backendUrl}/postPublish', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

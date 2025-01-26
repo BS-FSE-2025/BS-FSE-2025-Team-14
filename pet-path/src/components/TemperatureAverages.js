@@ -10,7 +10,7 @@ const TemperatureAverage = () => {
   useEffect(() => {
     const fetchReadings = async () => {
       try {
-        const response = await fetch("http://localhost:3001/locations");
+        const response = await fetch("${backendUrl}/locations");
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
