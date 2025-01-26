@@ -4,7 +4,7 @@ let last30Readings = [];
 // פונקציה למשיכת 30 הקריאות האחרונות מהשרת ועדכון המשתנה הגלובלי
 export const fetchLast30Readings = async () => {
   try {
-    const response = await fetch("https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/locations", {
+    const response = await fetch("https://petpath.onrender.com/locations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

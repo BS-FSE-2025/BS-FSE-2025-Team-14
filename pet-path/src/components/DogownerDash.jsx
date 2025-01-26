@@ -38,7 +38,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
   
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/recommendations');
+        const response = await fetch('https://petpath.onrender.com/recommendations');
         const data = await response.json();
         setRecommendations(data);
       } catch (err) {
@@ -59,7 +59,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       }
   
       try {
-        const response = await fetch('https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/postRecommendation', {
+        const response = await fetch('https://petpath.onrender.com/postRecommendation', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
   
     const fetchPublish = async () => {
       try {
-        const response = await fetch('https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/publish');
+        const response = await fetch('https://petpath.onrender.com/publish');
         const data = await response.json();
         setPublish(data);
       } catch (err) {
@@ -103,7 +103,7 @@ function DogownerDash({ isAuthenticated, onLogin, onRegister, user }) {
       }
   
       try {
-        const response = await fetch('https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/postPublish', {
+        const response = await fetch('https://petpath.onrender.com/postPublish', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

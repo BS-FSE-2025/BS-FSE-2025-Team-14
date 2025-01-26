@@ -16,7 +16,7 @@ const Alerts = () => {
   useEffect(() => {
     const fetchReadings = async () => {
       try {
-        const response = await fetch("https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/locations");
+        const response = await fetch("https://petpath.onrender.com/locations");
         if (!response.ok) {
           throw new Error("שגיאה בטעינת הנתונים מהשרת");
         }

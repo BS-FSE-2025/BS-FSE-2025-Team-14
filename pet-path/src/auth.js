@@ -2,7 +2,7 @@
 
 // פונקציה להתחברות
 export const loginUser = async (username, password, role) => {
-  const res = await fetch("https://dashboard.render.com/web/srv-cuakr29opnds73edmevg/login", {
+  const res = await fetch("https://petpath.onrender.com/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
