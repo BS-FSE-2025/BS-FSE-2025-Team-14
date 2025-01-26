@@ -107,7 +107,7 @@
     async function loadSensorData() {
   try {
     // שליפת הנתונים מה-API שלך
-    const response = await fetch('http://localhost:3001/locations'); // הכתובת לשליפת הנתונים
+    const response = await fetch('https://petpath.onrender.com/locations'); // הכתובת לשליפת הנתונים
     const sensorData = await response.json();
     console.log('Sensor data:', sensorData); // הדפסת נתוני החיישן בקונסול
 
