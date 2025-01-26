@@ -25,7 +25,7 @@ export const loginUser = async (username, password, role) => {
 export const registerUser = async (username, password, role) => {
   const newUser = { username, password, role };
 
-  const res = await fetch("${backendUrl}/register", {
+  const res = await fetch("https://petpath.onrender.com/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

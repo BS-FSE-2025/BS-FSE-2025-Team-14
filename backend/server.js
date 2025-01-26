@@ -12,7 +12,7 @@ const Token = require('./models/Token'); // מודל טוקן
 const app = express();
 app.use(express.json()); // מאפשר לקבל בקשות ב-JSON
 app.use(cors({
-  origin: ["http://localhost:3000", "https://petpath.netlify.app/"]
+  origin: ["http://localhost:3000", "https://petpath.netlify.app"]
 }));
 
 
