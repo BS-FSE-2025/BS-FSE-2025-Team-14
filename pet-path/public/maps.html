@@ -119,9 +119,9 @@
       const temperature = sensor.temperature;
 
       // בוחרים את הצבע לפי טמפרטורת החיישן
-      const markerColor = temperature > 30 ? 'red' : 'blue'; // שינוי צבע לפי טמפרטורה
+      const markerColor = temperature > 10 ? 'red' : 'blue'; // שינוי צבע לפי טמפרטורה
 
-      // יצירת המרקר עם הצבע המתאים
+      // יצירת המרקר הצבע המתאים
       L.marker([lat, lng], {
         icon: L.divIcon({
           className: 'leaflet-div-icon',
